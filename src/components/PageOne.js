@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 class PageOne extends Component {
   render() {
@@ -12,7 +13,7 @@ class PageOne extends Component {
             <h3>A Bright, Standardized Future</h3>
             <p>Yes, classes put developers in an object-oriented mindset which masks the true power of JavaScript, but I look forward to a future where JavaScript code bases aren’t composed of so many different styles. ES6 classes finally give us a clear, consistent, standardized pattern to follow. Clean code is about writing code for humans, so I favor the patterns that best convey my intent. While there are certainly risks of misuse, ES6 classes provide a practical, clear path for creating JavaScript applications in a consistent style.</p>
             <p>
-              <Link className="btn btn-primary" to="https://medium.com/@housecor/in-defense-of-javascript-classes-e50bf2270a95" role="button">Read Article &raquo;</Link>
+              <Link to="https://medium.com/@housecor/in-defense-of-javascript-classes-e50bf2270a95" target="_blank"><Button bsStyle="primary">Read Article &raquo;</Button></Link>
             </p>
           </div>
         </div>

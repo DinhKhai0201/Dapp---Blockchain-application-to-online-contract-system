@@ -1,6 +1,9 @@
 # A test project to get familiar with React Router v4
 
 
+![](./rr4.png)
+
+
 ## create-react-app
 
 We use the [Facebook React Boilerplate](https://github.com/facebookincubator/create-react-app) to get started:
@@ -29,7 +32,7 @@ And the Javascript at the end of the body tag:
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 ```
 
-To add a simple Navbar on top, we will now replace the default create-react-app JSX inside _./src/app.js_ with a Bootstrap Navbar from their [Example list](https://getbootstrap.com/docs/4.0/examples/) (remember to replace all instances of __class__ with __className__!):
+To add a simple Navbar on top, we will now replace the default create-react-app JSX inside _./src/coponents/app.js_ with a Bootstrap Navbar from their [Example list](https://getbootstrap.com/docs/4.0/examples/) (remember to replace all instances of __class__ with __className__!):
 
 ```js
 return (
@@ -97,29 +100,52 @@ and import \<NavLink /\> from react-router-dom:
 import { NavLink } from 'react-router-dom'
 ```
 
-We created two links to three components, aptly named _/page-1_ and _/page-2_, that we now have to create inside the _/src_ directory:
+We created two links to two components, aptly named _/page-1_ and _/page-2_, that we now have to create inside the _./src/components_ directory. For \<PageOne /\> we want to use an __ES6 Class Component__ to render some JSX:
 
 ```js
 import React, {Component} from 'react'
+import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 class PageOne extends Component {
   render() {
     return (
-      <h2>Home</h2>
+        <div className="jumbotron mt">
+          [...]
+        </div>
     );
   }
 }
 
-export default PageOne;
+export default PageOne
 ```
 
-Create a \<PageTwo /\> component, following the same structure. Make sure to import all components in _./src/index.js_::
+And for \<PageTwo /\> we use a __Stateless Component__:
+
+```js
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
+
+
+const PageTwo = () => (
+    <div className="jumbotron mt">
+      [...]
+    </div>
+)
+
+export default PageTwo
+```
+
+Make sure to import all components in _./src/index.js_::
 
 ```js
 import App from './App';
 import PageOne from './PageOne';
 import PageTwo from './PageTwo';
 ```
+
+As well as adding the Router itself:
 
 ```js
 import {
@@ -129,7 +155,39 @@ import {
 } from 'react-router-dom'
 ```
 
-Now we can copy the navigation to _./src/index.js_ and replace the \<App /\> component that was placed their bei create-react-app:
+Now we can copy the navigation (everything inside the \<nav\> tag) from  _./src/components/app.js_ to _./src/index.js_ and replace the \<App /\> component that was placed there by create-react-app. Then wrap the JSX into a \<Router\> tag:
+
+```js
+render(
+  <Router>
+    <div className="container">
+      <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top mb">
+        <NavLink className="navbar-brand" to="/"> <img src={Logo} alt="React Router v4" /> </NavLink>
+
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/page-1">Page 1</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/page-2">Page 2</NavLink>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <Route exact path="/" component={App}/>
+      <Route path="/page-1" component={PageOne}/>
+      <Route path="/page-2" component={PageTwo}/>
+    </div>
+  </Router>,
+
+document.getElementById('root'))
+```
 
 
 

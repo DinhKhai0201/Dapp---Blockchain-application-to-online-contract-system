@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 class App extends Component {
   render() {
@@ -13,7 +14,7 @@ class App extends Component {
           <h3>Dynamic Routing</h3>
           <p>When we say dynamic routing, we mean routing that takes place as your app is rendering, not in a configuration or convention outside of a running app. That means almost everything is a component in React Router.</p>
           <p>
-            <Link className="btn btn-primary" to="https://reacttraining.com/react-router/web/example/basic" role="button">Example &raquo;</Link>
+            <Link to="https://reacttraining.com/react-router/web/example/basic" target="_blank"><Button bsStyle="danger">Example &raquo;</Button></Link>
           </p>
         </div>
       </div>
