@@ -4,7 +4,15 @@
 ![](./rr4.png)
 
 
-## create-react-app
+Table of Topics
+
+01. [create-react-app](#01-create-react-app)
+02. [react-bootstrap](#02-react-bootstrap)
+03. [react-router-dom](#03-react-router-dom)
+04. [Nested routes](#04-nested-routes)
+
+
+## 01 create-react-app
 
 We use the [Facebook React Boilerplate](https://github.com/facebookincubator/create-react-app) to get started:
 
@@ -13,7 +21,7 @@ create-react-app react-router-4
 ```
 
 
-## react-bootstrap
+## 02 react-bootstrap
 
 And add some [Bootstrap](https://react-bootstrap.github.io/getting-started.html) for styling:
 
@@ -80,7 +88,7 @@ npm start
 The Bootstrap Navbar should now show up in our React app on _locallhost:3000_:
 
 
-## react-router-dom
+## 03 react-router-dom
 
 We can now use the [basic example](https://reacttraining.com/react-router/web/example/basic) from the reacttraining.com website to add some routing to our app. First install the web based router - which is now called react-router-dom:
 
@@ -196,7 +204,7 @@ document.getElementById('root'))
 ```
 
 
-## Nested routes
+## 04 Nested routes
 
 
 
