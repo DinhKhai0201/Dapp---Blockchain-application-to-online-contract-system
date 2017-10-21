@@ -137,7 +137,7 @@ const PageTwo = () => (
 export default PageTwo
 ```
 
-Make sure to import all components in _./src/index.js_::
+Make sure to import all components in _./src/index.js_:
 
 ```js
 import App from './App';
@@ -188,50 +188,3 @@ render(
 
 document.getElementById('root'))
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.
