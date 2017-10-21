@@ -3,6 +3,7 @@ import {
   Route,
   NavLink
 } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 
 const Topics = ({ match }) => (
@@ -13,10 +14,14 @@ const Topics = ({ match }) => (
         <nav className="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
           <ul className="nav nav-pills flex-column">
             <li className="nav-item">
-              <NavLink class="nav-link" to={`${match.url}/page-1-nested`}>PageOneNested</NavLink>
+              <NavLink class="nav-link" to={`${match.url}/page-1-nested`}>
+                <Button bsStyle="primary" block>NestOne</Button><br/>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink class="nav-link" to={`${match.url}/page-2-nested`}>PageTwoNested</NavLink>
+              <NavLink class="nav-link" to={`${match.url}/page-2-nested`}>
+                <Button bsStyle="primary" block>NestTwo</Button>
+              </NavLink>
             </li>
           </ul>
         </nav>

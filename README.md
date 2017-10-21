@@ -12,6 +12,9 @@ We use the [Facebook React Boilerplate](https://github.com/facebookincubator/cre
 create-react-app react-router-4
 ```
 
+
+## react-bootstrap
+
 And add some [Bootstrap](https://react-bootstrap.github.io/getting-started.html) for styling:
 
 ```
@@ -76,13 +79,16 @@ npm start
 
 The Bootstrap Navbar should now show up in our React app on _locallhost:3000_:
 
+
+## react-router-dom
+
 We can now use the [basic example](https://reacttraining.com/react-router/web/example/basic) from the reacttraining.com website to add some routing to our app. First install the web based router - which is now called react-router-dom:
 
 ```
 npm install --save react-router-dom
 ```
 
-To add links to our navigation, we will need the [\<NaveLink/\> component](https://reacttraining.com/react-router/web/api/NavLink), which is special version of the \<Link/\> that will add styling attributes to the rendered element when it matches the current URL (activeState). Replace all:
+To add links to our navigation, we will need the [\<NavLink/\> component](https://reacttraining.com/react-router/web/api/NavLink), which is special version of the \<Link/\> that will add styling attributes to the rendered element when it matches the current URL (activeState). Replace all:
 
 ```html
 <a href="#"></a>
@@ -187,4 +193,45 @@ render(
   </Router>,
 
 document.getElementById('root'))
+```
+
+
+## Nested routes
+
+
+
+```js
+const Topics = ({ match }) => (
+  <div>
+    <h2>Topics</h2>
+    <ul>
+      <li>
+        <Link to={`${match.url}/rendering`}>
+          Rendering with React
+        </Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/components`}>
+          Components
+        </Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/props-v-state`}>
+          Props v. State
+        </Link>
+      </li>
+    </ul>
+
+    <Route path={`${match.url}/:topicId`} component={Topic}/>
+    <Route exact path={match.url} render={() => (
+      <h3>Please select a topic.</h3>
+    )}/>
+  </div>
+)
+
+const Topic = ({ match }) => (
+  <div>
+    <h3>{match.params.topicId}</h3>
+  </div>
+)
 ```
