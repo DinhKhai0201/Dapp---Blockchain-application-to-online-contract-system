@@ -1,9 +1,11 @@
 # A test project to get familiar with React Router v4
 
 
-![](./rr4.png)
+![](./rr4_01.png)
 
 
+
+---
 Table of Topics
 
 01. [create-react-app](#01-create-react-app)
@@ -206,40 +208,96 @@ document.getElementById('root'))
 
 ## 04 Nested routes
 
+To create nested routes in React Router v4, we just have to add more routes inside a component. E.g. you have a route that leads the user from _/_ to _/chapter1_, rendering the \<Chapter1 /\> component. To create a route to a nested article inside the chapter, like _/chapter1/subarticle1_, we now have to add further routes with the __${match.url}__ attribute inside the \<Chapter1 /\>:
+
+```js
+<NavLink to={`${match.url}/subarticle1`} />
+<Route path={`${match.url}/subarticle1`} component={SubArticle1}/>
+```
+
+So lets add another Link and Route to the Nav component in _./src/index.js_ to render another component, called \<NestedRoutes /\>, under _/nested-routes_. This is going to be our parent component for two nested routes/components: \<PageOneNested /\> and \<PageTwoNested /\> rendered under _./nested-routes/page-1-nested_ and _./nested-routes/page-2-nested_, respectively.
 
 
 ```js
+import React from 'react'
+import { Route, NavLink, Link } from 'react-router-dom'
+
+import PageOneNested from './PageOneNested'
+import PageTwoNested from './PageTwoNested'
+
 const Topics = ({ match }) => (
-  <div>
-    <h2>Topics</h2>
-    <ul>
-      <li>
-        <Link to={`${match.url}/rendering`}>
-          Rendering with React
-        </Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/components`}>
-          Components
-        </Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/props-v-state`}>
-          Props v. State
-        </Link>
-      </li>
-    </ul>
 
-    <Route path={`${match.url}/:topicId`} component={Topic}/>
-    <Route exact path={match.url} render={() => (
-      <h3>Please select a topic.</h3>
-    )}/>
-  </div>
+    <div className="container-fluid">
+      <div className="row">
+        <nav className="nav nav-pills nav-fill col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+          <div className="clearfix"><br/><br/><br/></div>
+          <Link className="nav-item nav-link" to={match.url}>
+            <h3>Nested Routes</h3>
+            <hr/>
+          </Link>
+          <NavLink className="nav-item nav-link" to={`${match.url}/page-1-nested`}>
+            NestOne
+          </NavLink>
+          <NavLink className="nav-item nav-link" to={`${match.url}/page-2-nested`}>
+            NestTwo
+          </NavLink>
+        </nav>
+
+        <main role="main" className="col-sm-9 ml-sm-auto col-md-10 pt-3">
+          <div className="clearfix"><br/><br/><br/></div>
+          <h1>Dashboard</h1>
+          <Route path={`${match.url}/page-1-nested`} component={PageOneNested}/>
+          <Route path={`${match.url}/page-2-nested`} component={PageTwoNested}/>
+          <Route exact path={match.url} render={() => (
+            <div>
+              [...]
+            </div>
+          )}/>
+        </main>
+      </div>
+    </div>
 )
 
-const Topic = ({ match }) => (
-  <div>
-    <h3>{match.params.topicId}</h3>
-  </div>
-)
+export default Topics
 ```
+
+You can create the two files PageOneNested.js and PageTwoNested.js inside _./src/components_. Just copy and paste the content from PageOne.js or PageTwo.js and change the component names, inside the file to PageOneNested and PageTwoNested.
+
+
+![](./rr4_02.png)
+
+
+Clicking on the NestOne or NestTwo link will load the components \<PageOneNested /\> or \<PageTwoNested /\> in the \<main\> area of the screen, under the Dashboard title - awesome !
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.

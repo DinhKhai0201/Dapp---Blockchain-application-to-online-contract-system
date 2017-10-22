@@ -1,8 +1,8 @@
 import React from 'react'
 import { Route, NavLink, Link } from 'react-router-dom'
 
-import { PageOneNested } from './PageOneNested'
-import { PageTwoNested } from './PageTwoNested'
+import PageOneNested from './PageOneNested'
+import PageTwoNested from './PageTwoNested'
 
 const Topics = ({ match }) => (
 
@@ -14,10 +14,10 @@ const Topics = ({ match }) => (
             <h3>Nested Routes</h3>
             <hr/>
           </Link>
-          <NavLink className="nav-item nav-link" to={`${match.url}/PageOneNested/`}>
+          <NavLink className="nav-item nav-link" to={`${match.url}/page-1-nested`}>
             NestOne
           </NavLink>
-          <NavLink className="nav-item nav-link" to={`${match.url}/PageTwoNested/`}>
+          <NavLink className="nav-item nav-link" to={`${match.url}/page-2-nested`}>
             NestTwo
           </NavLink>
         </nav>
@@ -25,7 +25,8 @@ const Topics = ({ match }) => (
         <main role="main" className="col-sm-9 ml-sm-auto col-md-10 pt-3">
           <div className="clearfix"><br/><br/><br/></div>
           <h1>Dashboard</h1>
-          <Route exact path={`${match.url}/:topicId`} component={Topic}/>
+          <Route path={`${match.url}/page-1-nested`} component={PageOneNested}/>
+          <Route path={`${match.url}/page-2-nested`} component={PageTwoNested}/>
           <Route exact path={match.url} render={() => (
             <div>
               <h2>Lorem Table</h2>
@@ -84,12 +85,6 @@ const Topics = ({ match }) => (
         </main>
       </div>
     </div>
-)
-
-const Topic = ({ match }) => (
-  <div>
-    <h3>{match.params.topicId}</h3>
-  </div>
 )
 
 export default Topics

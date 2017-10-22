@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 
 
-const PageTwo = () => (
+const PageTwoNested = () => (
 
     <div className="container">
       <div className="clearfix"><br/><br/><br/></div>
@@ -21,4 +21,4 @@ const PageTwo = () => (
     </div>
 )
 
-export default PageTwo
+export default PageTwoNested
