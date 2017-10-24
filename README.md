@@ -11,7 +11,10 @@ Table of Topics
 01. [create-react-app](#01-create-react-app)
 02. [react-bootstrap](#02-react-bootstrap)
 03. [react-router-dom](#03-react-router-dom)
-04. [Nested routes](#04-nested-routes)
+04. [Nested Routes](#04-nested-routes)
+05. [Loading Animations](#05-loading-animations)
+
+
 
 
 ## 01 create-react-app
@@ -21,6 +24,7 @@ We use the [Facebook React Boilerplate](https://github.com/facebookincubator/cre
 ```
 create-react-app react-router-4
 ```
+
 
 
 ## 02 react-bootstrap
@@ -88,6 +92,7 @@ npm start
 ```
 
 The Bootstrap Navbar should now show up in our React app on _locallhost:3000_:
+
 
 
 ## 03 react-router-dom
@@ -206,7 +211,8 @@ document.getElementById('root'))
 ```
 
 
-## 04 Nested routes
+
+## 04 Nested Routes
 
 To create nested routes in React Router v4, we just have to add more routes inside a component. E.g. you have a route that leads the user from _/_ to _/chapter1_, rendering the \<Chapter1 /\> component. To create a route to a nested article inside the chapter, like _/chapter1/subarticle1_, we now have to add further routes with the __${match.url}__ attribute inside the \<Chapter1 /\>:
 
@@ -272,9 +278,18 @@ Clicking on the NestOne or NestTwo link will load the components \<PageOneNested
 
 
 
+## 05 Loading Animations
+
+The [react-transition-group](https://github.com/reactjs/react-transition-group/tree/v1-stable) is an easy way to perform animations when a React component enters or leaves the DOM.
 
 
+```
+npm install react-transition-group --save
+```
 
+https://hackernoon.com/animated-page-transitions-with-react-router-4-reacttransitiongroup-and-animated-1ca17bd97a1a
+https://medium.com/appifycanada/animations-with-reacttransitiongroup-4972ad7da286
+https://github.com/reactjs/react-transition-group/tree/v1-stable
 
 
 
