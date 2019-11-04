@@ -1,0 +1,18 @@
+.style-space {
+	margin: 5px!important;
+}
+.dark {
+	background-color: #2e2929!important;
+	color: white!important;
+}
+.style-space:hover {
+	box-shadow: 0px 2px 2px 2px white;
+}
+.betform {
+	background-color: #e9ecef;
+	border-radius: 10px;
+	margin: 20px  40px;
+	display: table;
+	text-align: center;
+
+}

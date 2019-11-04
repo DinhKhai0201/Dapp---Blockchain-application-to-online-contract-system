@@ -1,0 +1,26 @@
+.card-s {
+        max-width: 300px!important;
+        display: table;
+        float: left!important;
+        margin: 30px 10px 20px 10px;
+        transition: all .2s ease-in-out;
+        cursor: pointer;
+        box-shadow: 24px 16px 32px -17px rgba(0,0,0,0.64)!important;
+}
+.card-s:hover {
+   transform: scale(1.1); 
+}
+.media-s {
+        height: 150px;
+        padding-top: 56.25%!important;
+        background-color:black!important;
+    }
+   
+    
+.avatar {
+        background-color: red;
+    }
+.display-p {
+    font-weight: 700!important;
+    font-size: 20px!important;
+} 
