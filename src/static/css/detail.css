@@ -1,0 +1,109 @@
+.background-detail {
+	position: relative;
+
+}
+.background-detail img{
+	background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 600px;
+  filter: brightness(50%);
+}
+.detail-d {
+	position: relative;
+}
+.chip-detail {
+	 display: inline-block;
+    background: rgba(255,255,255,.7);
+    border-radius: 34px;
+    padding: 8px 18px;
+    font-weight: 400;
+    color: rgba(0,0,0,1);
+    font-size: 20px;
+    line-height: 24px;
+}
+.detail-address {
+}
+.address_a {
+	position: absolute;
+	top: 50px;
+	display: table;
+}
+.address-apartment {
+	float: right;
+}
+.type-apartment {
+	float: left;
+    margin-left: 200px;
+}
+
+.name-info {
+	font-size: 80px;
+    line-height: 72px;
+    font-weight: 700;
+    color: #fff;
+    
+}
+.res {
+	position: absolute;
+    top: 200px;
+    padding-left: 200px;
+    /*left:  200px;*/
+}
+.font-xl {
+	font-size: 48px;
+    line-height: 48px;
+    font-weight: 700;
+}
+.description {
+	margin-top: 100px;
+    margin-left: 100px;
+}
+.desctiption-c {
+	padding-top: 100px!important;
+    padding-left: 100px!important;
+}
+.des-ap {
+	padding-top: 30px;
+}
+.contact {
+	padding-top: 30px;
+}
+.info {
+	font-size: x-large;
+}
+.detail-info {
+	margin-top: 100px;
+    color: #fff;
+
+}
+.detail-info .bed {
+	float: left;
+	text-align: center;
+	margin-right: 50px;
+
+}
+.detail-info .room {
+	float: left;
+	text-align: center;
+	margin-right: 50px;
+}
+.detail-info .bath {
+	float: left;
+	margin-right: 50px;
+	text-align: center;
+}
+.des-bed, .des-room, .des-bath {
+	font-size: 50px;
+
+}
+.contact-c {
+	float: left;
+}
+.contact-c .info {
+	color: #7b53c1;
+}
+.name-user {
+	float: left;
+}

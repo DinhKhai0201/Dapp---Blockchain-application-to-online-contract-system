@@ -19,6 +19,9 @@ class PageAdd extends Component {
             type: '',
             typestatus:'',
             rentsale: '',
+            bed: 1,
+            room: 1,
+            bath:1,
             GAS: 700000, 
             GAS_PRICE: 2000000000
 
@@ -86,8 +89,12 @@ class PageAdd extends Component {
     }
     onSubmit = (e) => {
         e.preventDefault();
-        let { contracts, account, name, description, fee, yearbuild, address,pictures,rentsale, typestatus,type,GAS,GAS_PRICE} = this.state;
-        contracts.methods.addApartment(name, description, fee, yearbuild, address, pictures, account, rentsale, typestatus, type).send({ from: `${account}`, gas: GAS, gasPrice: `${GAS_PRICE}` }, function (err, result) {
+        let dess ='';
+        let { contracts, account, name, description,bed,room,bath, fee, yearbuild, address,pictures,rentsale, typestatus,type,GAS,GAS_PRICE} = this.state;
+        let des =[bed,room, bath ,description];
+        dess = des.join('_');
+        // console.log(dess);
+        contracts.methods.addApartment(name, dess, fee, yearbuild, address, pictures, account, rentsale, typestatus, type).send({ from: `${account}`, gas: GAS, gasPrice: `${GAS_PRICE}` }, function (err, result) {
             console.log(result)
         }).once('receipt', (receipt) => {
             alert("You just add");
@@ -177,7 +184,24 @@ class PageAdd extends Component {
                                 <div className="form-element-bar" />
                                 <label className="form-element-label" htmlFor="field-be1h8i-ll2hpg-q4efzm-nfjj1e-udkw5r">Select your Type status</label>
                             </div>
-                            
+                            <div className="form-element form-input form-has-error">
+                                <input name="bed" id="field-x98ezh-s6s2g8-vfrkgb-ngrhef-atfkop" className="form-element-field -hasvalue" placeholder=" " value ={this.state.bed} type="number" required  onChange={e => this.handleChange(e)}/>
+                                <div className="form-element-bar" />
+                                <label className="form-element-label" htmlFor="field-x98ezh-s6s2g8-vfrkgb-ngrhef-atfkop">Bed</label>
+                                <small className="form-element-hint"></small>
+                            </div>
+                            <div className="form-element form-input form-has-error">
+                                <input name="room" id="field-x98ezh-s6s2g8-vfrkgb-ngrhef-atfkop" className="form-element-field -hasvalue" placeholder=" " value ={this.state.room} type="number" required  onChange={e => this.handleChange(e)}/>
+                                <div className="form-element-bar" />
+                                <label className="form-element-label" htmlFor="field-x98ezh-s6s2g8-vfrkgb-ngrhef-atfkop">Room</label>
+                                <small className="form-element-hint"></small>
+                            </div>
+                            <div className="form-element form-input form-has-error">
+                                <input name="bath" id="field-x98ezh-s6s2g8-vfrkgb-ngrhef-atfkop" className="form-element-field -hasvalue" placeholder=" " value ={this.state.bath} type="number" required  onChange={e => this.handleChange(e)}/>
+                                <div className="form-element-bar" />
+                                <label className="form-element-label" htmlFor="field-x98ezh-s6s2g8-vfrkgb-ngrhef-atfkop">Bath</label>
+                                <small className="form-element-hint"></small>
+                            </div>
                             <div className="form-element form-textarea">
                                 <textarea name="description" id="field-3naeph-0f3yuw-x153ph-dzmahy-qhkmgm" className="form-element-field" placeholder=" " defaultValue={""} onChange={e => this.handleChange(e)}/>
                                 <div className="form-element-bar" />

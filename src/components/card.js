@@ -1,5 +1,7 @@
 import React, { Component} from 'react';
 import { Link } from 'react-router-dom'
+import HotelIcon from '@material-ui/icons/Hotel';
+import HomeIcon from '@material-ui/icons/Home';
 
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -10,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import '../static/css/card.css'
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 class RecipeReviewCard extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +24,7 @@ class RecipeReviewCard extends Component {
     }
 
     render() {
-         let {ipfsHash, name, address, id} = this.props;
+         let {ipfsHash, name, address, id ,price ,des} = this.props;
         return (
            
                 <Card className="card-s">
@@ -44,18 +48,21 @@ class RecipeReviewCard extends Component {
                                 </Typography>
                            </Link>
                             <Typography variant="body2" color="textSecondary" component="p">
-                            {address}
+                           {address}
                             </Typography>
                         <hr />
+                            <Typography variant="body2" color="textSecondary" component="p">
+                            <AttachMoneyIcon />{price} VND
+                            </Typography>
                     </CardContent>
-                    <CardActions disableSpacing>
+                     <CardActions disableSpacing>
                         <IconButton aria-label="add to favorites">
-                            <FavoriteIcon />
+                            {(des.split("_"))[0] } <br /><HotelIcon /> 
                         </IconButton>
                         <IconButton aria-label="share">
-                            <ShareIcon />
+                            {(des.split("_"))[1] } <br /><HomeIcon />
                         </IconButton>
-                    </CardActions>
+                    </CardActions> 
                 </Card>
              
         );

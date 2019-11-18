@@ -1,5 +1,6 @@
 .card-s {
-        max-width: 300px!important;
+        width: 256px!important;
+        height: 388px!important;
         display: table;
         float: left!important;
         margin: 30px 10px 20px 10px;
