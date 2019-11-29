@@ -2,33 +2,26 @@ import React, { Component} from 'react';
 import { Link } from 'react-router-dom'
 import HotelIcon from '@material-ui/icons/Hotel';
 import HomeIcon from '@material-ui/icons/Home';
-
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import '../static/css/card.css'
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 class RecipeReviewCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           
-
         };
     }
 
     render() {
          let {ipfsHash, name, address, id ,price ,des} = this.props;
         return (
-           
                 <Card className="card-s">
-                    {(ipfsHash != '' )? (
+                    {(ipfsHash !== '' )? (
                        <CardMedia
                             className="media-s"
                             image={ipfsHash}
@@ -42,7 +35,7 @@ class RecipeReviewCard extends Component {
                       )}
                     
                         <CardContent>    
-                          <Link to={`/detail/${id} `}>                 
+                          <Link to={`/detail/${id} `} style ={{textDecoration:'none'}}>                 
                                 <Typography variant="body2" color="textSecondary" component="p" className = "display-p">
                                 {name}
                                 </Typography>
@@ -52,7 +45,7 @@ class RecipeReviewCard extends Component {
                             </Typography>
                         <hr />
                             <Typography variant="body2" color="textSecondary" component="p">
-                            <AttachMoneyIcon />{price} VND
+                        <AttachMoneyIcon />{price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} VND
                             </Typography>
                     </CardContent>
                      <CardActions disableSpacing>
@@ -64,7 +57,6 @@ class RecipeReviewCard extends Component {
                         </IconButton>
                     </CardActions> 
                 </Card>
-             
         );
     }
 }

@@ -534,14 +534,90 @@ select.form-element-field {
   margin: 0;
 }
 
-body {
+/* body {
   margin: 40px auto;
  
-}
+} */
 .imgbg {
-   background-image: linear-gradient(to top, #a3bded 0%, #6991c7 100%);
+   /* background-image: linear-gradient(to top, #a3bded 0%, #6991c7 100%); */
 }
 .imgipfs {
   margin-top: 20px;
   margin-bottom: 30px;
 }
+.imgipfs img {
+  margin: 2px;
+  border: 3px solid orange;
+  border-radius: 20px;
+}
+/* start label add image*/
+.icon-add-image {
+    display: table;
+    
+}
+.content-add-image {
+    display: table;
+    margin: 0 auto;
+}
+.label-add-image {
+  display: table;
+  margin:20px auto 10px;
+}
+.body-add-image {
+    border: 1px solid #e9eaef;
+    z-index: 99;
+    padding: 20px;
+    transition-duration: 200ms;
+    border-radius: 6px ;
+
+}
+.body-add-image:hover {
+    box-shadow: 0 14px 24px 0 rgba(50,49,58,.25);
+     -webkit-transform: scale(1.1,1.1);
+    transform: scale(1.1,1.1);
+    transition-duration: 200ms;
+}
+.design-icon {
+    box-shadow: 0 14px 24px 0 rgba(50,49,58,.25);
+    margin: 0 auto 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: orange;
+    color:white;
+    width: 60px!important;
+    height: 60px!important;
+    cursor: pointer;
+   
+    /* padding: 30px; */
+}
+.add-title-image {
+   padding-bottom: 30px;
+  font-weight: 700;
+  text-align: center
+}
+.add-des-image {
+  text-align: center
+}
+/* end label add image */
+/* bt add and cancel */
+.add-apartment {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 70px;
+}
+.add-apartment button{
+    margin: 5px;
+    padding: 15px;
+    outline: 0;
+}
+.add-apartment button.bt-cancel-apartment{
+    color: red;
+    border: 1px solid;
+}
+.add-apartment button.bt-add-apartment{
+    color: green;
+    border: 1px solid;
+}
+/* end add and cancel */

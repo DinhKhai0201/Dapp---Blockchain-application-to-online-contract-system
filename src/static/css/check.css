@@ -1,0 +1,10 @@
+.fetchsign {
+   display: table;
+    padding: 30px;
+    margin: 0 auto;
+    max-width: 500px;
+    border: 1px solid;
+    border-radius: 23px;
+    background-color: aliceblue;
+    max-width: 500px;
+}

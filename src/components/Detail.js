@@ -8,6 +8,8 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import HomeIcon from '@material-ui/icons/Home';
 import HotelIcon from '@material-ui/icons/Hotel';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import Button from "@material-ui/core/Button";
+
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
@@ -49,14 +51,19 @@ class Detail extends Component {
 	          })
 		})
 		.then(function(events){
-        console.log(that.state.data[0].returnValues.id);
+        // console.log(that.state.data[0].returnValues.id);
 		});
     }
     getContract(data);
   };
+  chat =(add) => {
+    console.log(add.toLowerCase())
+    this.props.history.push(`/chat/${this.state.account}/${add.toLowerCase()}`);
+    window.location.reload();
 
+  }
   render() { 	
-    let {data} = this.state
+    let {data, account} = this.state
     let picture ;
     let name;
     let price;
@@ -69,14 +76,31 @@ class Detail extends Component {
     let bed;
     let room;
     let bath;
+    let _landlord;
+    let bt;
     if (data && data[0]) { 
-      console.log(data[0]);
-          picture = <img src = {data[0].returnValues.ipfsHash} />
+          picture = (
+            <img
+              src={data[0].returnValues.ipfsHash.split("_")[0]}
+              alt={data[0].returnValues.ipfsHash.split("_")[0]}
+            />
+          );
           address = <h4 className ="chip-detail address-apartment"> {data[0].returnValues.address_apartment} </h4>
           name =<h1 className ="name-info"> {data[0].returnValues.name} </h1>;
-          if (data[0].returnValues._ApartmentType == 0) {
+          _landlord = <span> {data[0].returnValues._landlord}</span>
+           if (data[0].returnValues._landlord !== account) {
+            bt = <Button
+              variant="outlined"
+              className=""
+              onClick={() => this.chat(`${data[0].returnValues._landlord}`)}
+            >
+              Chat now
+          </Button>
+          }
+     
+          if (data[0].returnValues._ApartmentType === 0) {
               type_a = <h4 className ="chip-detail type-apartment"> House</h4>
-          } else if (data[0].returnValues._ApartmentType == 1) {
+          } else if (data[0].returnValues._ApartmentType === 1) {
               type_a = <h4 className ="chip-detail type-apartment"> Apartment</h4>
           } else {
               type_a = <h4 className ="chip-detail type-apartment"> Room</h4>
@@ -86,7 +110,7 @@ class Detail extends Component {
           room =<p className ="des-room">{((data[0].returnValues.description).split("_"))[1] }</p> 
           bath =<p className ="des-bath">{((data[0].returnValues.description).split("_"))[2] }</p> 
 
-          if (data[0].returnValues.statusRentOrSale == 0) {
+          if (data[0].returnValues.statusRentOrSale === 0) {
               forr = <span className ="chip-detail-for"> Rent</span>
           } else {
               forr = <span className ="chip-detail-for"> Sale</span>
@@ -101,7 +125,7 @@ class Detail extends Component {
           }else {
               status = <p className ="chip-detail-status"><BarChartIcon />Status: Closed</p>
           }
-           price = <p className ="des-year"><AttachMoneyIcon />Price: {data[0].returnValues.fee } VND</p> 
+      price = <p className="des-year"><AttachMoneyIcon />Price: {data[0].returnValues.fee.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') } VND</p> 
 
     }
     return (
@@ -151,16 +175,18 @@ class Detail extends Component {
                 {status}
                 {price}
               </div>
-              <hr className ="container" />
-              <div className =' contact container'> 
+              <hr className ="" />
+              <div className =' contact container '> 
+              <div className ="row">
                  <div className =" contact-c col-md-3" >
                     <p className ="info"> Contact Information</p>
                 </div>
                 <div className =" name-c col-md-9" >
                     <p className =""><CallIcon /> Khai : 0332015868</p>
-                    <p className =""><AccountBalanceWalletIcon /> Metamask : {this.state.account} </p>
+                     <p className=""><AccountBalanceWalletIcon /> Metamask : {_landlord} </p>
+                     {bt}
                 </div>
-
+              </div>
               </div>
           </div>
       </div>

@@ -1,3 +1,26 @@
+.choose-type {
+    display: flex;
+    justify-content: center;
+}
+.search-tt {
+    padding: 11px 40px;
+    cursor: pointer;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-bottom: 0px;
+    background-color: rgba(46,45,54,.3);
+    color: white;
+    font-weight: 700;
+    transition: background-color .3s ease-out;
+}
+.search-tt:hover {
+     background-color: rgba(46,45,54,.5);
+     transition: background-color .3s ease-out;
+}
+#active-search {
+    background-color: #fff;
+    color: #7b53c1;
+}
 .search {
     padding: 21px 30px;
     width: 100%;
@@ -9,7 +32,7 @@
     box-shadow: 0 14px 24px rgba(46,45,54,.25);
     color: #2e2d36;
     width: 50%;
-    margin: 20px auto;
+    margin: 0px auto 20px;
     display: table;
 
 }
@@ -42,7 +65,7 @@
     padding-bottom: 30px;
 }
 .bbg {
-    background: url('../house.svg') center bottom no-repeat;
+    background: url('../city7.png') center bottom no-repeat;
 
 }
 .title-data {
@@ -130,4 +153,8 @@
  }
  .select-choice {
     float: right;
+ }
+ /* bỏ đường viền màu xanh  */
+ .rm-outline {
+     outline: none;
  }

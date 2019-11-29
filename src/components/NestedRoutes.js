@@ -1,11 +1,10 @@
 import React from 'react'
 import { Route, NavLink, Link } from 'react-router-dom'
 
-import PageOneNested from './PageOneNested'
+import PageOneNested from './chat'
 import PageTwoNested from './PageTwoNested'
 
 const Topics = ({ match }) => (
-
     <div className="container-fluid">
       <div className="row">
         <nav className="nav nav-pills nav-fill col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
@@ -21,11 +20,10 @@ const Topics = ({ match }) => (
             NestTwo
           </NavLink>
         </nav>
-
         <main role="main" className="col-sm-9 ml-sm-auto col-md-10 pt-3">
           <div className="clearfix"><br/><br/><br/></div>
           <h1>Dashboard</h1>
-          <Route path={`${match.url}/page-1-nested`} component={PageOneNested}/>
+          <Route path={`${match.url}/:address1/:address2`} component={PageOneNested}/>
           <Route path={`${match.url}/page-2-nested`} component={PageTwoNested}/>
           <Route exact path={match.url} render={() => (
             <div>
@@ -86,5 +84,4 @@ const Topics = ({ match }) => (
       </div>
     </div>
 )
-
 export default Topics

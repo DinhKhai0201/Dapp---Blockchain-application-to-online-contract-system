@@ -1,0 +1,100 @@
+/* Extra small devices (portrait phones, less than 576px) */
+
+@media (max-width: 575.98px) {
+    .chat {
+        margin-top: 60px;
+    }
+    .card-s {
+        min-width: 270px;
+        display: table;
+    }
+    .titlename {
+        padding-top: 50px;
+    }
+    .filter-pr div.col-md-8 .filter {
+        margin-bottom: 20px;
+    }
+    .check-sign {
+        display: table!important;
+        margin: 0 auto!important;
+    }
+    #introduction  {
+        padding: 70px 25px 20px;
+    }
+    .print {
+        margin-top: 100px;
+    }
+    .datasign {
+        word-break: break-all;
+        margin: 20px;
+    }
+    .cont_centrar {
+        width: 300px;
+        margin-top: 70px;
+    }
+    .search-tt {
+        padding: 3px;
+        border: 1px solid white;
+    }
+   
+}
+
+
+/* Small devices (landscape phones, 576px and up) */
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .chat {
+        margin-top: 60px;
+    }
+    .check-sign {
+        display: table!important;
+        margin: 0 auto!important;
+    }
+    .print {
+        margin-top: 100px;
+    }
+    /* .cont_centrar {
+        margin-top: -200px;
+    } */
+     .search-tt {
+        padding: 5px;
+        border: 1px solid white;
+    }
+}
+
+
+/* Medium devices (tablets, 768px and up) */
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .chat {
+        margin-top: 60px;
+    }
+    .print {
+        margin-top: 100px;
+    }
+    /* .cont_centrar {
+        margin-top: -200px;
+    } */
+}
+
+
+/* Large devices (desktops, 992px and up) */
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .chat {
+        margin-top: 60px;
+    }
+    .print {
+        margin-top: 100px;
+    }
+}
+
+
+/* Extra large devices (large desktops, 1200px and up) */
+
+@media (min-width: 1200px) {
+     .print {
+        margin-top: 100px;
+    }
+    
+}

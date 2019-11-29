@@ -27,7 +27,7 @@
 }
 .address_a {
 	position: absolute;
-	top: 50px;
+	top: 86px;
 	display: table;
 }
 .address-apartment {
@@ -58,7 +58,7 @@
 }
 .description {
 	margin-top: 100px;
-    margin-left: 100px;
+    /* margin-left: 100px; */
 }
 .desctiption-c {
 	padding-top: 100px!important;
@@ -69,6 +69,8 @@
 }
 .contact {
 	padding-top: 30px;
+	margin-bottom: 100px;
+
 }
 .info {
 	font-size: x-large;
@@ -95,7 +97,7 @@
 	text-align: center;
 }
 .des-bed, .des-room, .des-bath {
-	font-size: 50px;
+	font-size: 22px;
 
 }
 .contact-c {
