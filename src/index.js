@@ -35,7 +35,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      localStorage.getItem("login") === window.ethereum.selectedAddress ? (
+      localStorage.getItem("login") === ((window.ethereum && window.ethereum.selectedAddress) ? (window.ethereum.selectedAddress):'') ? (
         <Component {...props} />
       ) : (
         <Redirect
@@ -81,10 +81,13 @@ class Login extends Component {
             })
         }
         getContract(data);
-         window.ethereum.on("accountsChanged", function(accounts) {
-           localStorage.removeItem("login");
-           window.location.reload();
-         });
+      if (window.ethereum) {
+        window.ethereum.on("accountsChanged", function (accounts) {
+          localStorage.removeItem("login");
+          window.location.reload();
+        });
+      }
+        
         }
     handleChange = (e) => {
         this.setState({
@@ -228,10 +231,12 @@ class Register extends Component {
         });
     };
     getContract(data);
-    window.ethereum.on("accountsChanged", function(accounts) {
-      localStorage.removeItem("login");
-      window.location.reload();
-    });
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", function (accounts) {
+        localStorage.removeItem("login");
+        window.location.reload();
+      });
+    }
   }
   handleChange = e => {
     this.setState({
@@ -415,7 +420,7 @@ render(
                 </NavLink>
               </li>
               {localStorage.getItem("login") ===
-              window.ethereum.selectedAddress ? (
+                ((window.ethereum && window.ethereum.selectedAddress) ? (window.ethereum.selectedAddress):'') ? (
                 <li className="nav-item space">
                   <NavLink className="nav-link" to="/my">
                     My account
@@ -425,7 +430,7 @@ render(
             </ul>
             <div className="form-inline my-2 my-lg-0">
               {localStorage.getItem("login") !==
-              window.ethereum.selectedAddress ? (
+                ((window.ethereum && window.ethereum.selectedAddress) ? (window.ethereum.selectedAddress):'') ? (
                 <Button
                   variant="outlined"
                   color="secondary"

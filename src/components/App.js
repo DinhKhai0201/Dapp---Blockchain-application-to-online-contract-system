@@ -59,9 +59,12 @@ class App extends Component {
         .on('error', console.error);
     }
     getContract(data);
-     window.ethereum.on("accountsChanged", function(accounts) {
-       window.location.reload();
-     });
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", function (accounts) {
+        localStorage.removeItem("login");
+        window.location.reload();
+      });
+    }
   };
   getdata(contracts, dataA, that) {
      contracts.events.AddApartment({

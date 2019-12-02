@@ -426,6 +426,7 @@ const abi = [
 let getContract = async(cb = ()=>{})=>{
   let web3 = await web3cur();
   const contract = new web3.eth.Contract(abi, address,{ gasPrice: 10000000000 });
+  console.log(contract)
   cb(contract, web3)
 }
 getContract()

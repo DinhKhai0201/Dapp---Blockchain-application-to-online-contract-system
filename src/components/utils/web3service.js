@@ -21,6 +21,7 @@ let web3cur = new Promise((resolve, reject)=>{
     } else {
         let cur = new Web3(new Web3.providers.HttpProvider(rpcURL));
         console.log("No Metamask")
+        console.log(cur)
         resolve(cur);
         }
     })
