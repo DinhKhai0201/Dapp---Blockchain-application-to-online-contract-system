@@ -92,9 +92,11 @@ class contract extends React.Component {
                 
         };
         getContract(data);
-          window.ethereum.on("accountsChanged", function(accounts) {
-            window.location.reload();
-          });
+        window.ethereum.on("accountsChanged", function(accounts) {
+          window.location.reload();
+        });
+        window.scrollTo(0, 0);
+      
     }
     handleChangeTenant = (e) => {
         this.setState({
@@ -175,7 +177,7 @@ class contract extends React.Component {
         }
            
         return (
-          <div className="container print">
+          <div className="container print" >
             <p align="center">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
@@ -1378,16 +1380,16 @@ class contract extends React.Component {
             <div className="row">
               <div className="col-md-9"></div>
               <div className="col-md-3">
-                {(dataAgree.rentorconfirmed === '' 
-                )? (
-                   <Button
+                {dataAgree.rentorconfirmed === "" ? (
+                  <Button
                     variant="outlined"
                     className=""
                     onClick={this.acceptAgreement}
                   >
                     Accept
                   </Button>
-                ) : (""
+                ) : (
+                  ""
                 )}
               </div>
             </div>

@@ -249,7 +249,19 @@ class App extends Component {
    
   render() {
     let display = this.state.datafilter.map((value, key) => {
-      return (<RecipeReviewCard key={key} des={value.description} name={value.name} price={value.fee} address={value.address_apartment} ipfsHash={value.ipfsHash.split("_")[0]} id = {parseInt(value.id)}/>)
+      return (
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <RecipeReviewCard
+              key={key}
+              des={value.description}
+              name={value.name}
+              price={value.fee}
+              address={value.address_apartment}
+              ipfsHash={value.ipfsHash.split("_")[0]}
+              id={parseInt(value.id)}
+            />
+          </div>
+      );
       
     });
     return (
@@ -482,8 +494,9 @@ class App extends Component {
                 </div>
               ) : null}
             </div>
-
+            <div className ="row">
             {display}
+            </div>
           </div>
         </div>
       </main>

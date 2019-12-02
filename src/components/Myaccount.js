@@ -138,7 +138,8 @@ class Myaccount extends Component {
 	getContract(data);
 	 window.ethereum.on("accountsChanged", function(accounts) {
 		window.location.reload();
-	});
+  });
+  window.scrollTo(0, 0);
   }
   clearr = () => {
     this.sigCanvas.current.clear();

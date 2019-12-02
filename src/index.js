@@ -2,6 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import {
   BrowserRouter as Router,
+  Switch,
   Route,
   NavLink,
   Link,
@@ -28,9 +29,9 @@ import Logo from './static/logo.png'
 import './static/css/index.css'
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import { toast } from "react-toastify";
 import ipfs from './components/utils/ipfs'
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -87,8 +88,8 @@ class Login extends Component {
           window.location.reload();
         });
       }
-        
-        }
+      window.scrollTo(0, 0); 
+    }
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -113,11 +114,16 @@ class Login extends Component {
           .then(res =>{
             console.log(res.data);
             localStorage.setItem("login", res.data.person);
-            if (localStorage.getItem("login") === res.data.person) {
+            if (localStorage && localStorage.getItem("login") === res.data.person) {
+               toast.success("Success login !", {
+                 position: toast.POSITION.TOP_LEFT
+               });
               this.props.history.push("/");
               window.location.reload();
             } else if (localStorage.getItem("login") === "false") {
-              console.log("aa");
+              toast.error("No login !", {
+                position: toast.POSITION.TOP_LEFT
+              });
             }
           });
     } 
@@ -133,6 +139,7 @@ class Login extends Component {
     render() {
         return (
           <div className="cont_principal cont_principall ">
+            <ToastContainer />
             <div className="cont_centrar">
               <div className="cont_login">
                 <div className="cont_tabs_login">
@@ -141,7 +148,6 @@ class Login extends Component {
                       <a href="#">SIGN IN</a>
                       <span className="linea_bajo_nom" />
                     </li>
-                   
                   </ul>
                 </div>
                 <div className="cont_text_inputs ">
@@ -152,7 +158,7 @@ class Login extends Component {
                     value={this.state.account}
                   />
                 </div>
-               
+
                 <div className="cont_btn">
                   <button
                     className="btn_sign"
@@ -162,13 +168,14 @@ class Login extends Component {
                     SIGN IN
                   </button>
                 </div>
-                <div className="cont_text_inputs " style={{ padding:' 0px 30px 20px'}}>
+                <div
+                  className="cont_text_inputs "
+                  style={{ padding: " 0px 30px 20px" }}
+                >
                   <Link to="/register">Or Sign up</Link>
                 </div>
               </div>
-             
             </div>
-            
           </div>
         );
     }
@@ -237,6 +244,7 @@ class Register extends Component {
         window.location.reload();
       });
     }
+    window.scrollTo(0, 0);
   }
   handleChange = e => {
     this.setState({
@@ -263,7 +271,7 @@ class Register extends Component {
       address: account
     };
     axios.post("http://localhost:4000/persons/register", obj).then(res => {
-      toast("Wow so easy !");
+     
     });
      contracts.methods
        .addUser(
@@ -283,7 +291,9 @@ class Register extends Component {
          }
        )
        .once("receipt", receipt => {
-         alert("You just add");
+        toast.success("Success !", {
+          position: toast.POSITION.TOP_LEFT
+        });
        });  
   };
   captureFile = (event) => {
@@ -304,14 +314,13 @@ class Register extends Component {
   render() {
     return (
       <div className="cont_principal">
+        <ToastContainer />
         <div className="cont_centrar">
           <div className="cont_login">
             <div className="cont_tabs_login">
               <ul className="ul_tabs">
                 <li className="active">
-                  <a href="#" >
-                    SIGN UP
-                  </a>
+                  <a href="#">SIGN UP</a>
                   <span className="linea_bajo_nom" />
                 </li>
               </ul>
@@ -406,7 +415,7 @@ render(
             <ul className="navbar-nav mr-auto">
               <li className="nav-item space">
                 <NavLink className="nav-link" to="/add-apartment">
-                  Add Apartment
+                  Add
                 </NavLink>
               </li>
               <li className="nav-item space">
@@ -420,7 +429,9 @@ render(
                 </NavLink>
               </li>
               {localStorage.getItem("login") ===
-                ((window.ethereum && window.ethereum.selectedAddress) ? (window.ethereum.selectedAddress):'') ? (
+              (window.ethereum && window.ethereum.selectedAddress
+                ? window.ethereum.selectedAddress
+                : "") ? (
                 <li className="nav-item space">
                   <NavLink className="nav-link" to="/my">
                     My account
@@ -430,13 +441,15 @@ render(
             </ul>
             <div className="form-inline my-2 my-lg-0">
               {localStorage.getItem("login") !==
-                ((window.ethereum && window.ethereum.selectedAddress) ? (window.ethereum.selectedAddress):'') ? (
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  className=""
-                >
-                  <NavLink className="nav-link" to="/login" style ={{color: 'white'}}>
+              (window.ethereum && window.ethereum.selectedAddress
+                ? window.ethereum.selectedAddress
+                : "") ? (
+                <Button variant="outlined" color="secondary" className="">
+                  <NavLink
+                    className="nav-link"
+                    to="/login"
+                    style={{ color: "white" }}
+                  >
                     Login
                   </NavLink>
                 </Button>
@@ -456,23 +469,23 @@ render(
             </div>
           </div>
         </nav>
-
-        <Route exact path="/" component={App} />
-        <PrivateRoute  path="/add-apartment" component={PageAdd} />
-        <Route  path="/detail/:id" component={Detail} />
-        <PrivateRoute  path="/chat/:address1/:address2" component={chat} />
-        <Route  path="/check" component={Check} />
-        <Route  path="/contract/:id" component={contract} />
-        <PrivateRoute  path="/my" component={Myaccount} />
-        <PrivateRoute  path="/chats" component={massage} />
-        <Route  path="/login" component={Login} />
-        <Route  path="/register" component={Register} />
-        {/* <Route path="*" exact={true}  component={Notfound} />
-        <Redirect from='*' to='/404' /> */}
+        <Switch>
+          <Route exact path="/" component={App} />
+          <PrivateRoute path="/add-apartment" component={PageAdd} />
+          <Route path="/detail/:id" component={Detail} />
+          <PrivateRoute path="/chat/:address1/:address2" component={chat} />
+          <Route path="/check" component={Check} />
+          <Route path="/contract/:id" component={contract} />
+          <PrivateRoute path="/my" component={Myaccount} />
+          <PrivateRoute path="/chats" component={massage} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="*" exact={true} component={Notfound} />
+          <Redirect from="*" to="/404" />
+        </Switch>
       </div>
       <Footer />
     </div>
-    
   </Router>,
   document.getElementById("root")
 );
