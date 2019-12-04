@@ -2,6 +2,8 @@ import React from 'react'
 import { getContract } from "./utils/contractservice";
 import Button from "@material-ui/core/Button";
 import "../static/css/contract.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 class contract extends React.Component {
     constructor(props) {
         super(props);
@@ -177,7 +179,8 @@ class contract extends React.Component {
         }
            
         return (
-          <div className="container print" >
+          <div className="container print">
+            <ToastContainer />
             <p align="center">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>

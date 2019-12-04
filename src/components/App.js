@@ -6,6 +6,8 @@ import RecipeReviewCard from './card'
 import { getContract } from './utils/contractservice';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -265,15 +267,24 @@ class App extends Component {
       
     });
     return (
-      <main role="main" style={{ marginBottom: '100px' }}>
+      <main role="main" style={{ marginBottom: "100px" }}>
         <div className="containerr">
+          <ToastContainer />
           <div className="bbg animated fadeIn animated">
             <h1 className="titlename">FIND YOUR APARTMENT</h1>
             <div className="choose-type">
-              <div className="search-tt " id={((this.state.type_search === 'name') ? 'active-search' : '')} onClick={() => this.setFilter('name')}  >
+              <div
+                className="search-tt "
+                id={this.state.type_search === "name" ? "active-search" : ""}
+                onClick={() => this.setFilter("name")}
+              >
                 <span>Name</span>
               </div>
-              <div className="search-tt" id={((this.state.type_search === 'address') ? 'active-search' : '')} onClick={() => this.setFilter('address')}>
+              <div
+                className="search-tt"
+                id={this.state.type_search === "address" ? "active-search" : ""}
+                onClick={() => this.setFilter("address")}
+              >
                 <span>Address</span>
               </div>
             </div>
@@ -284,7 +295,11 @@ class App extends Component {
             ></input>
             <h6 className="addaprt">Or Add your apartment</h6>
             <p className="button-center">
-              <Link to="/add-apartment" style={{ textDecoration: 'none' }} className="rm-outline">
+              <Link
+                to="/add-apartment"
+                style={{ textDecoration: "none" }}
+                className="rm-outline"
+              >
                 <Button
                   variant="outlined"
                   color="primary"
@@ -303,7 +318,7 @@ class App extends Component {
               Discover thousands of homes for sale of rent in 10+ place
             </h6>
           </div>
-          <div className="container" style ={{display:'table'}}>
+          <div className="container" style={{ display: "table" }}>
             <div className="filter-pr row">
               <div className="col-md-8">
                 <div className="filter">
@@ -494,9 +509,7 @@ class App extends Component {
                 </div>
               ) : null}
             </div>
-            <div className ="row">
-            {display}
-            </div>
+            <div className="row">{display}</div>
           </div>
         </div>
       </main>

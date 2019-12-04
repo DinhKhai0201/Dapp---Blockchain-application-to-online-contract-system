@@ -20,43 +20,44 @@ class RecipeReviewCard extends Component {
     render() {
          let {ipfsHash, name, address, id ,price ,des} = this.props;
         return (
-                <Card className="card-s">
-                    {(ipfsHash !== '' )? (
-                       <CardMedia
-                            className="media-s"
-                            image={ipfsHash}
-                            title= {name}
-                        />
-                      ) : (
-                         <CardMedia
-                            className="media-s"
-                            title= {name}
-                        />
-                      )}
-                    
-                        <CardContent>    
-                          <Link to={`/detail/${id} `} style ={{textDecoration:'none'}}>                 
-                                <Typography variant="body2" color="textSecondary" component="p" className = "display-p">
-                                {name}
-                                </Typography>
-                           </Link>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                           {address}
-                            </Typography>
-                        <hr />
-                            <Typography variant="body2" color="textSecondary" component="p">
-                        <AttachMoneyIcon />{price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} VND
-                            </Typography>
-                    </CardContent>
-                     <CardActions disableSpacing>
-                        <IconButton aria-label="add to favorites">
-                            {(des.split("_"))[0] } <br /><HotelIcon /> 
-                        </IconButton>
-                        <IconButton aria-label="share">
-                            {(des.split("_"))[1] } <br /><HomeIcon />
-                        </IconButton>
-                    </CardActions> 
-                </Card>
+          <Card className="card-s">
+            {ipfsHash !== "" ? (
+              <CardMedia className="media-s" image={ipfsHash} title={name} />
+            ) : (
+              <CardMedia className="media-s" title={name} />
+            )}
+
+            <CardContent>
+              <Link to={`/detail/${id} `} style={{ textDecoration: "none" }}>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  component="p"
+                  className="display-p"
+                >
+                  {name.length >= 20 ? (name.substring(0, 20) + '...') : name}
+                </Typography>
+              </Link>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {address.length >= 20 ? (address.substring(0, 28) + '...') : address}
+              </Typography>
+              <hr />
+              <Typography variant="body2" color="textSecondary" component="p">
+                <AttachMoneyIcon />
+                {price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")} VND
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+                {des.split("_")[0]} <br />
+                <HotelIcon />
+              </IconButton>
+              <IconButton aria-label="share">
+                {des.split("_")[1]} <br />
+                <HomeIcon />
+              </IconButton>
+            </CardActions>
+          </Card>
         );
     }
 }

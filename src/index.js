@@ -32,6 +32,7 @@ import axios from 'axios';
 import ipfs from './components/utils/ipfs'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}

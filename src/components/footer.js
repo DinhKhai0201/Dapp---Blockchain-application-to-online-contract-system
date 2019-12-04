@@ -8,7 +8,7 @@ const Footer = () => (
             <div className="row">
                 <div className="col-sm-12 col-md-6">
                     <h6>About</h6>
-                    <p className="text-justify">Dapp.com is the largest decentralized applications distributor in the world, listing over 2,200 dapps that are built on seven major blockchains. The platform showcases dapps based on trusted dapp data analytics, community reviews and user comments. They’ve achieved a very large user-base with over 150,000 monthly visits across the globe and over 100,000 registered users and followers on social-media platforms.</p>
+                    <p className="text-justify">Dapp is the largest decentralized applications distributor in the world, listing over 2,200 dapps that are built on seven major blockchains. The platform showcases dapps based on trusted dapp data analytics, community reviews and user comments. They’ve achieved a very large user-base with over 150,000 monthly visits across the globe and over 100,000 registered users and followers on social-media platforms.</p>
                 </div>
                 <div className="col-xs-6 col-md-3">
                     <h6>Categories</h6>

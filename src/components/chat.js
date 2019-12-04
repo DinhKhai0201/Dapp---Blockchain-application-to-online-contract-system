@@ -4,7 +4,8 @@ import { getContract } from './utils/contractservice';
 import axios from 'axios';
 import logo from '../static/user_mock.svg'
 import Moment from "react-moment";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 class chat extends Component {
   constructor(props) {
     super(props);
@@ -132,10 +133,24 @@ class chat extends Component {
   }
   newMessage=(m)=> {
     // console.log(m.data)
-	 this.setState({ messages: [...this.state.messages, m.data]});
+   this.setState({ messages: [...this.state.messages, m.data]});
+   console.log(m.data)
+   if ( this.refs.chat_chat) {
+      let chat_chat = this.refs.chat_chat;
+      chat_chat.scrollTop = chat_chat.scrollHeight; 
+   }
+    
+  //  if (
+  //    m.data.add_to == this.state.account &&
+  //    this.props.match.path !== "/chat/:address1/:address2"
+  //  ) {
+  //    console.log("asdasdasdkhj")
+  //    toast.success(`${m.data.from} send you a message!`, {
+  //      position: toast.POSITION.TOP_LEFT
+  //    });
+  //  }
 	//  scroll to chat
-	 let chat_chat = this.refs.chat_chat;
-	 chat_chat.scrollTop = chat_chat.scrollHeight; 
+	
   }
   //Gửi event socket newMessage với dữ liệu là nội dung tin nhắn
   sendnewMessage(m) {
@@ -146,8 +161,10 @@ class chat extends Component {
   }
   render() {
    let {messages} = this.state 
+   console.log(this.props)
     return (
       <div className="chat">
+        <ToastContainer />
         <div className="chat-header clearfix">
           <img src={logo} alt="avatar" />
           <div className="chat-about">
@@ -158,10 +175,10 @@ class chat extends Component {
         </div>
         <div className="chat-history" ref="chat_chat">
           <ul>
-            {messages.map(element => {
+            {messages.map((element,i) => {
               if (this.state.account === element.add_from) {
                 return (
-                  <li className="clearfix">
+                  <li key={i} className="clearfix">
                     <div className="message-data  align-right">
                       <span className="message-data-time">
                         <Moment format="YYYY/MM/DD HH:mm:ss">

@@ -301,7 +301,10 @@ class Myaccount extends Component {
     let AgreeL = db.map(element => {
       return (
         // console.log(element)
-        <div key={element.id} className="conservation-list-wrap">
+        <div
+          key={element.id}
+          className="conservation-list-wrap fadeInLeft animated"
+        >
           <div className="container">
             <div className="container-item">
               <div className="conservation-item">
@@ -351,7 +354,10 @@ class Myaccount extends Component {
     let AgreeT = da.map(element => {
       return (
         // console.log(element)
-        <div key={element.id} className="conservation-list-wrap">
+        <div
+          key={element.id}
+          className="conservation-list-wrap fadeInLeft animated"
+        >
           <div className="container">
             <div className="container-item">
               <div className="conservation-item">
