@@ -85,7 +85,7 @@ class massage extends Component {
         </Link>
       );})
     return (
-      <div className='main-wrap-list' style={{ marginBottom: '100px' }}>
+      <div className='main-wrap-list' style={{ marginBottom: '100px',minHeight:'400px' }}>
         {data}
       </div>
     );

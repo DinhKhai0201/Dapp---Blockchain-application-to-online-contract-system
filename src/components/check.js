@@ -35,37 +35,39 @@ class Check extends Component {
     });
   };
   check = async () => {
-    let { signature, web3, msg, contracts } = this.state;
+    let { signature, web3, msg, contracts,account } = this.state;
     let that = this;
-    await web3.eth.personal.ecRecover(msg, `${signature}`).then(add => {
+    let msgsha = web3.utils.sha3(msg)
+    contracts.methods.verify(msgsha, signature).call({ from: `${account}` }).then(function (result) {
+      console.log(result)
       contracts.events
         .AddUser(
           {
-            filter: { myaddress: `${add}` },
+            filter: { myaddress: `${result}` },
             fromBlock: 0,
             toBlock: "latest"
           },
-          function(error, event) {
+          function (error, event) {
           }
         )
-        .on("data", function(event) {
+        .on("data", function (event) {
           if (event) {
             toast.success("Success !", {
               position: toast.POSITION.TOP_LEFT
             });
             that.setState({
               data: event.returnValues,
-              signature:''
+              signature: ''
             });
-            
-          } 
+
+          }
         })
-        .on("changed", function(event) {
+        .on("changed", function (event) {
         })
-        .on("error", function(error){
-            toast.error("No data !", {
-              position: toast.POSITION.TOP_LEFT
-            });
+        .on("error", function (error) {
+          toast.error("No data !", {
+            position: toast.POSITION.TOP_LEFT
+          });
         });
     });
   };

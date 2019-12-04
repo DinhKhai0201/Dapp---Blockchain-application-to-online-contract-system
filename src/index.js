@@ -301,6 +301,7 @@ class Register extends Component {
     event.stopPropagation()
     event.preventDefault()
     const file = event.target.files[0]
+    console.log(file)
     let reader = new window.FileReader()
     reader.readAsArrayBuffer(file)
     reader.onloadend = () => this.convertToBuffer(reader)
@@ -308,11 +309,13 @@ class Register extends Component {
   convertToBuffer = async (reader) => {
     const buffer = await Buffer.from(reader.result);
     await ipfs.add(buffer, (err, ipfsHash) => {
+      console.log(ipfsHash)
       this.setState({ ipfshash: 'https://gateway.ipfs.io/ipfs/' + ipfsHash[0].hash });
     })
 
   };
   render() {
+    let { ipfshash} = this.state
     return (
       <div className="cont_principal">
         <ToastContainer />
@@ -376,6 +379,7 @@ class Register extends Component {
                 name="ipfshash"
                 onChange={this.captureFile}
               />
+             
             </div>
             <div className="cont_btn">
               <button className="btn_sign" onClick={this.registerbt}>

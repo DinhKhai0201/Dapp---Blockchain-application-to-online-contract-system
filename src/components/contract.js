@@ -17,7 +17,8 @@ class contract extends React.Component {
             dataAgree: [],
             rentorsign: '',
             id:'',
-            password: ''
+            password: '',
+          msg:'Tôi chấp nhập điều khooản và kí để tạo hợp đồng \n I accept the terms and conditions to sign this contract'
         };
     }
 
@@ -107,27 +108,42 @@ class contract extends React.Component {
      
     }
     rentorSign = async () => {
-        let msg = `Tôi chấp nhập điều khooản và kí để tạo hợp đồng \n I accept the terms and conditions to sign this contract`;
-        await this.state.web3.eth.personal.sign(msg, `${this.state.account}`, "password")
-            .then(sign => {
-                console.log(sign);
-                this.setState({
-                    rentorsign: sign
-                })
-            }
-            );
+      let {account, web3,msg } = this.state
+      let msgsha = web3.utils.sha3(msg)
+      let that = this
+      await web3.eth.personal.sign(msgsha, account, function (err, sign) {
+        that.setState({
+          rentorsign: sign
+        })
+        console.log(sign)
+      });
+      // await web3.eth.personal.sign(msgsha, `${account}`, "password")
+      //       .then(sign => {
+      //           console.log(sign);
+      //           this.setState({
+      //               rentorsign: sign
+      //           })
+      //       }
+      //       );
     }
-    acceptAgreement =() => {
-        let { dataAgree, password, rentorsign, account, contracts} = this.state
+    acceptAgreement = async () => {
+      let { dataAgree, password, rentorsign, account, contracts, msg, web3} = this.state
         let pass = dataAgree.passeord
-        console.log()
+        let msgsha = web3.utils.sha3(msg)
+        let check = await contracts.methods.isSigned(account, msgsha, rentorsign).call({ from: `${this.state.account}` })
+        console.log(check)
         if (pass === password ) {
             if (rentorsign !== '') {
-                contracts.methods.rentorConfirmed(dataAgree.id,rentorsign).send({ from: `${account}` }, function (err, result) {
+                if(check == true){
+                  contracts.methods.rentorConfirmed(dataAgree.id, rentorsign).send({ from: `${account}` }, function (err, result) {
                     console.log(result)
-                }).once('receipt', (receipt) => {
+                  }).once('receipt', (receipt) => {
                     alert("You just create");
-                })  
+                  })  
+                } else {
+                  alert("Warning: Not signature of landlord");
+                }
+               
             } else {
                 alert("Signature before accept");
             }
@@ -169,13 +185,15 @@ class contract extends React.Component {
         let _date;
         let _month;
         let _year;
-        let range;
+        let range_start;
+        let range_end;
         if (dataAgree && dataAgree.description){
             _today = ((((dataAgree.description).split("_"))[0]).split(","))[0]
             _date = (_today.split("/"))[1]
             _month = (_today.split("/"))[0]
             _year = (_today.split("/"))[2]
-            range = ((dataAgree.description).split("_"))[1]
+            range_start = ((dataAgree.description).split("_"))[1]
+          range_end = ((dataAgree.description).split("_"))[2]
         }
            
         return (
@@ -456,7 +474,7 @@ class contract extends React.Component {
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
-                  2. Mục đích sử dụng(Purpose of use): Thuê nhà để ở (Hire to
+                  2. Mục đích sử dụng(Purpose of use): <span style={{ color: 'orange' }}>Thuê nhà để ở</span> (Hire to
                   stay, residential purpose only).
                 </span>
               </span>
@@ -464,7 +482,7 @@ class contract extends React.Component {
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
-                  3. Thời hạn thuê (Duration of lease): {range}
+                  3. Thời hạn thuê (Duration of lease): <span style={{ color: 'orange' }}>{range_start}</span> đến (to) 
                 </span>
               </span>
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
@@ -473,7 +491,7 @@ class contract extends React.Component {
                 </span>
               </span>
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
-                <span style={{ fontSize: "medium" }}>tháng (months).</span>
+                <span style={{ fontSize: "medium" }}> <span style={{ color: 'orange' }}>{range_end}</span> .</span>
               </span>
             </p>
             {/* <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Từ ngày (from) </span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>..</em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>đến ngày (to) {this.state.to_date} </span></span></p> */}
@@ -1306,8 +1324,8 @@ class contract extends React.Component {
                 </span>
               </span>
             </p>
-            {/* <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>4. Hợp đồng này có hiệu lực pháp lý từ ngày ký đến hết ngày: ……………………………………</span></span></p> */}
-            {/* <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(This present contract has its legal validity from the signing date until………………………………..)</em></span></span></p> */}
+            <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>4. Hợp đồng này có hiệu lực pháp lý từ ngày ký đến hết ngày: <span style ={{color:'orange'}}>{range_end}</span></span></span></p>
+            <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(This present contract has its legal validity from the signing date until <span style={{ color: 'orange' }}>{range_end}</span>)</em></span></span></p>
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
@@ -1380,7 +1398,7 @@ class contract extends React.Component {
                 )}
               </div>
             </div>
-            <div className="row">
+            <div className="row" style ={{marginBottom:"100px"}}>
               <div className="col-md-9"></div>
               <div className="col-md-3">
                 {dataAgree.rentorconfirmed === "" ? (

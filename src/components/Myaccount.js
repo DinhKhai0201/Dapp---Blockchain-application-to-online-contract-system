@@ -23,11 +23,13 @@ class Myaccount extends Component {
       address_tenant: "",
       landlordsign: "",
       _password: "",
-      time_duration: "",
+      time_duration_start: "",
+      time_duration_end: "",
       today: new Date().toLocaleString(),
       to_date: "",
       GAS: 700000,
-      GAS_PRICE: 2000000000
+      GAS_PRICE: 2000000000,
+      msg: 'Tôi chấp nhập điều khooản và kí để tạo hợp đồng \n I accept the terms and conditions to sign this contract'
     };
     this.sigCanvas = React.createRef();
   }
@@ -198,18 +200,16 @@ class Myaccount extends Component {
       .on("error", console.error);
   }
   landlordSign = async () => {
-    let msg = `Tôi chấp nhập điều khooản và kí để tạo hợp đồng \n I accept the terms and conditions to sign this contract`;
-    await this.state.web3.eth.personal.sign(msg, `${this.state.account}`,"password")
-      .then(sign => {
-        console.log(sign);
-        this.setState({
-          landlordsign: sign
-        })
-      }   
-      );
-    // this.state.web3.eth.personal.ecRecover(msg, `${this.state.landlordsign}`).then(account => {
-    //   console.log(account)
-    // })
+    let {web3, msg, account} = this.state
+    let msgsha = web3.utils.sha3(msg)
+    let that = this
+    await web3.eth.personal.sign(msgsha, account, function (err, sign) {
+      that.setState({
+        landlordsign: sign
+      })
+      console.log(sign)
+    });
+
   }
   createAgreement =() => {
     let {
@@ -219,12 +219,13 @@ class Myaccount extends Component {
       account,
       _password,
       today,
-      time_duration,
+      time_duration_start,
+      time_duration_end,
       address_tenant,
       GAS,
       GAS_PRICE
     } = this.state;
-    let des = [today, time_duration]
+    let des = [today, time_duration_start,time_duration_end]
     let dess = des.join('_');
 
     if (landlordsign !== '' && data_tmp && data_tmp[0] ) {
@@ -248,7 +249,8 @@ class Myaccount extends Component {
     }
   }
   render() {
-    let { dataLandlord, dataTenent, time_duration, data_tmp, today, dataAgreeL, dataAgreeT} = this.state
+    let { dataLandlord, dataTenent, time_duration_start, time_duration_end, data_tmp, today, dataAgreeL, dataAgreeT} = this.state
+    console.log(this.state)
     let dataAprt = this.state.dataApartment.map(element => { return (
         <div key={element.id} className="conservation-list-wrap">
         <div className="container">
@@ -686,11 +688,11 @@ class Myaccount extends Component {
                         </div>
                         <div className="form-element form-input">
                           <input
-                            name="time_duration"
+                            name="time_duration_start"
                             id="field-omv6eo-metm0n-5j55wv-w3wbws-6nm2b9"
                             className="form-element-field"
                             placeholder="Please fill address account tenant"
-                            type="input"
+                            type="date"
                             required
                             onChange={e => this.handleChangeTenant(e)}
                           />
@@ -699,7 +701,25 @@ class Myaccount extends Component {
                             className="form-element-label"
                             htmlFor="field-omv6eo-metm0n-5j55wv-w3wbws-6nm2b9"
                           >
-                            Time duration(month)
+                            Time start
+                        </label>
+                        </div>
+                        <div className="form-element form-input">
+                          <input
+                            name="time_duration_end"
+                            id="field-omv6eo-metm0n-5j55wv-w3wbws-6nm2b9"
+                            className="form-element-field"
+                            placeholder="Please fill address account tenant"
+                            type="date"
+                            required
+                            onChange={e => this.handleChangeTenant(e)}
+                          />
+                          <div className="form-element-bar" />
+                          <label
+                            className="form-element-label"
+                            htmlFor="field-omv6eo-metm0n-5j55wv-w3wbws-6nm2b9"
+                          >
+                            Time end
                         </label>
                         </div>
                         <div className="form-element form-input">
@@ -761,7 +781,7 @@ class Myaccount extends Component {
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Party A has the following space leased by Party B)</em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>1. Địa điểm (Place): </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium',color:'orange' }}> {(data_tmp && data_tmp[0])?data_tmp[0].address_apartment:''}</span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>2. Mục đích sử dụng(Purpose of use): Thuê nhà để ở (Hire to stay, residential purpose only).</span></span></p>
-                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>3. Thời hạn thuê (Duration of lease): {time_duration}</span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em> </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>tháng (months).</span></span></p>
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>3. Thời hạn thuê (Duration of lease): {time_duration_start} đến {time_duration_end}</span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em> </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>tháng (months).</span></span></p>
                       {/* <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Từ ngày (from) {today.toLocaleString().split(',')[0]}</span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>..</em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>đến ngày (to) {this.state.to_date} </span></span></p> */}
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Bên B sẽ được quyền ưu tiên tiếp tục gia hạn vào cuối hợp đồng với điều kiện Bên A tiếp tục cho thuê (Giá thuê tuỳ thời điểm đó)</span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>Party B will be given priority to extend the contract if Party A continues to have his/her house rent (The rental price depends on that time)</em></span></span></p>
@@ -849,8 +869,8 @@ class Myaccount extends Component {
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(On the issuance of any legislation by a competent authority concerning House leasing, this present contract will be adjusted in accordance with Vietnamese laws and regulations)</em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>3. Tranh chấp phát sinh liên quan đến hợp đồng này hoặc việc vi phạm hợp đồng sẽ được giải quyết trước hết bằng thương lượng trên tinh thần thiện chí, hợp tác. Nếu thương lượng không thành thì vụ việc sẽ được đưa ra toà án có thẩm quyền giải quyết. Quyết định của toà án là chung và có hiệu lực cưỡng chế thi hành với các bên có liên quan. Bên thua phải chịu toàn bộ án phí và các chi phí khác (nếu có), trừ khi có thỏa thuận khác.</span></span></p>
                       <p align="justify"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Any disputes arising in reaction to this present contract or the breach of this present contract shall be settled firstly be negotiation under goodwill, cooperativeness. Should the negotiation fail, the matter shall be submitted to the competent court for settlement. And the Court's decision will be considered as final and binding on all concerning parties to execute. The Court charges and other expenses, if any, must be borne by the losing party, unless otherwise agreed).</em></span></span></p>
-                      {/* <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>4. Hợp đồng này có hiệu lực pháp lý từ ngày ký đến hết ngày: ……………………………………</span></span></p> */}
-                      {/* <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(This present contract has its legal validity from the signing date until………………………………..)</em></span></span></p> */}
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>4. Hợp đồng này có hiệu lực pháp lý từ ngày ký đến hết ngày: {time_duration_end} .</span></span></p>
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(This present contract has its legal validity from the signing date until {time_duration_end} .)</em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Hợp đồng này được lập thành 02 bản và có giá trị pháp lý như nhau, mỗi bên giữ 01 (một) bản.<br /> </span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(This present contract is made into 02 [two] copies in Vietnamese and English languages of the equal validity. Each party will keep 01 [one] copy)</em></span></span></p>
                       <p align="left">&nbsp;</p>
                       <div className='row'>
