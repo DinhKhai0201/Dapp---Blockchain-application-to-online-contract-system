@@ -1,7 +1,5 @@
 import React from 'react'
-import '../static/css/footer.css'
-import FacebookIcon from '@material-ui/icons/Facebook';
-// style ={{marginTop:'200px'}}
+import '../../static/css/footer.css'
 const Footer = () => (
     <footer className="site-footer" >
         <div className="container">

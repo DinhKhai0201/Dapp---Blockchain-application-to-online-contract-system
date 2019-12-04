@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { getContract } from './utils/contractservice';
-import "../static/css/chat.css";
+import { getContract } from '../utils/contractservice';
+import "../../static/css/chat.css";
 import {
   BrowserRouter as Router,
   Link

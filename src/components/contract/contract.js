@@ -1,7 +1,7 @@
 import React from 'react'
-import { getContract } from "./utils/contractservice";
+import { getContract } from "../utils/contractservice";
 import Button from "@material-ui/core/Button";
-import "../static/css/contract.css";
+import "../../static/css/contract.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 class contract extends React.Component {

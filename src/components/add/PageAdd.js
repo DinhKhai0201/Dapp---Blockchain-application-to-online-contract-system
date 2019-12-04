@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import '../static/css/inputadd.css'
-import ipfs from './utils/ipfs'
+import '../../static/css/inputadd.css'
+import ipfs from '../utils/ipfs'
 import AddIcon from '@material-ui/icons/Add';
-import { getContract } from './utils/contractservice'
+import { getContract } from '../utils/contractservice'
 import Button from "@material-ui/core/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

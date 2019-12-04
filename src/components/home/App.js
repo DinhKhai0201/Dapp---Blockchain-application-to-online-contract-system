@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import '../static/css/home.css'
-import "../static/css/text.css";
-import RecipeReviewCard from './card'
-import { getContract } from './utils/contractservice';
+import '../../static/css/home.css'
+import "../../static/css/text.css";
+import RecipeReviewCard from '../card'
+import { getContract } from '../utils/contractservice';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
 import { ToastContainer, toast } from "react-toastify";

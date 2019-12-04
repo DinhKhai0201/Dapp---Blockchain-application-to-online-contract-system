@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { getContract } from './utils/contractservice'
-import '../static/css/notfound.css'
+import { getContract } from '../utils/contractservice'
+import '../../static/css/notfound.css'
 
 class Notfound extends Component {
     constructor(props) {

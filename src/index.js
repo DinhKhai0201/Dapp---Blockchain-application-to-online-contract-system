@@ -9,16 +9,16 @@ import {
   Redirect 
 } from 'react-router-dom'
 // page
-import App from './components/App'
-import PageAdd from './components/PageAdd'
-import Detail from './components/Detail'
-import Myaccount from "./components/Myaccount";
-import massage from './components/massage'
-import chat from './components/chat'
-import contract from './components/contract'
-import Check from './components/check'
-import Notfound from './components/notfound'
-import Footer from './components/footer' 
+import App from './components/home/App'
+import PageAdd from './components/add/PageAdd'
+import Detail from './components/detail/Detail'
+import Myaccount from "./components/account/Myaccount";
+import massage from './components/chats/massage'
+import chat from './components/chats/chat'
+import contract from './components/contract/contract'
+import Check from './components/check/check'
+import Notfound from './components/pages/notfound'
+import Footer from './components/pages/footer' 
 // end page
 import './static/css/login.css'
 import "./static/css/response.css";

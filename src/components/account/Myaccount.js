@@ -1,7 +1,7 @@
 import React, { Component  } from "react";
-import { getContract } from "./utils/contractservice";
-import "../static/css/account.css";
-import "../static/css/sign.css";
+import { getContract } from "../utils/contractservice";
+import "../../static/css/account.css";
+import "../../static/css/sign.css";
 import Button from "@material-ui/core/Button";
 import { Link } from 'react-router-dom'
 

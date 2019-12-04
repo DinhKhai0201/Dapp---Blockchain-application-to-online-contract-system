@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import io from 'socket.io-client';
-import { getContract } from './utils/contractservice';
+import { getContract } from '../utils/contractservice';
 import axios from 'axios';
-import logo from '../static/user_mock.svg'
+import logo from '../../static/user_mock.svg'
 import Moment from "react-moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

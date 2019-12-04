@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Button from "@material-ui/core/Button";
-import { getContract } from "./utils/contractservice";
-import "../static/css/check.css";
+import { getContract } from "../utils/contractservice";
+import "../../static/css/check.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 class Check extends Component {

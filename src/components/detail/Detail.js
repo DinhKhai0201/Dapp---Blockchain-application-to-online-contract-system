@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import { getContract } from './utils/contractservice'
-import '../static/css/detail.css'
+import { getContract } from '../utils/contractservice'
+import '../../static/css/detail.css'
 import Chip from '@material-ui/core/Chip';
 import CallIcon from '@material-ui/icons/Call';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
