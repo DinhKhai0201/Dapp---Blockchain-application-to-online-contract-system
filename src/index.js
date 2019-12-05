@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import {render} from 'react-dom'
 import {
   BrowserRouter as Router,
@@ -443,11 +443,18 @@ render(
               (window.ethereum && window.ethereum.selectedAddress
                 ? window.ethereum.selectedAddress
                 : "") ? (
+                <Fragment>
                 <li className="nav-item space">
                   <NavLink className="nav-link" to="/my">
                     My account
                   </NavLink>
                 </li>
+                <li className="nav-item space">
+                    <NavLink className="nav-link" to="/upload">
+                      Upload
+                  </NavLink>
+                  </li>
+                    </Fragment>
               ) : null}
             </ul>
             <div className="form-inline my-2 my-lg-0">

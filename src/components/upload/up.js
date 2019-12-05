@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import '../../static/css/inputadd.css'
+import '../../static/css/upload.css'
 import ipfs from '../utils/ipfs'
 import { getContract } from '../utils/contractservice'
 import AddIcon from '@material-ui/icons/Add';
+import Button from "@material-ui/core/Button";
 class up extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +13,7 @@ class up extends Component {
           web3: "",
           contracts: null,
           account: "",
-          title: "title",
+          title: "",
           time: new Date().toLocaleString(),
           GAS: 700000,
           GAS_PRICE: 2000000000,
@@ -120,38 +122,63 @@ class up extends Component {
 
     };
     convertToBuffer = async (reader) => {
-       let {
-         contracts,
-         title,
-         time,
-         account,
-         GAS,
-         GAS_PRICE
-       } = this.state;
+      
        let _url;
         const buffer =  Buffer.from(reader.result);
         await ipfs.add(buffer, (err, ipfsHash) => {
             console.log(ipfsHash)
             _url = 'https://gateway.ipfs.io/ipfs/' + ipfsHash[0].hash ;
             this.setState({ url: _url });
-             contracts.methods
-               .Uploadfile(title, _url, time)
-               .send(
-                 { from: `${account}`, gas: GAS, gasPrice: `${GAS_PRICE}` },
-                 function(err, result) {
-                   console.log(result);
-                 }
-               )
-               .once("receipt", receipt => {
-                 alert("You just create");
-               }); 
+            
         })
         
 
     };
-   
+    handleChange = e => {
+      this.setState({
+        [e.target.name]: e.target.value
+      });
+      console.log(this.state);
+    };
+  uploadfile =e=> {
+    let {
+      contracts,
+      title,
+      time,
+      url,
+      account,
+      GAS,
+      GAS_PRICE
+    } = this.state;
+    contracts.methods
+      .Uploadfile(title, url, time)
+      .send(
+        { from: `${account}`, gas: GAS, gasPrice: `${GAS_PRICE}` },
+        function (err, result) {
+          console.log(result);
+        }
+      )
+      .once("receipt", receipt => {
+        alert("You just create");
+      }); 
+  }
+
     render() {
       console.log(this.state)
+      let { data} = this.state
+      let renderupload ;
+      if (data && data.length > 0) {
+        renderupload =  data.map((value,k)=>{
+          return(
+            <tr key={k}>
+              <td data-label="Account">{value.id}</td>
+              <td data-label="Due Date">{value.title}</td>
+              <td data-label="Amount"><a href={value.url} target ="_blank">Click</a></td>
+              <td data-label="Period">{value.time_upload}</td>
+            </tr>
+          )
+        })
+      }
         return (
           <div className="container imgbg" ref="ref_top">
             <div className="clearfix">
@@ -165,9 +192,9 @@ class up extends Component {
             >
               Up load
             </h5>
-            <div className="add-apartment row">
-              <div className="col-md-12">
-                <label for="multi" className="label-add-image">
+            <div className="row">
+              <div className="col-md-2">
+                <label for="multi" className="">
                   <div
                     className="body-add-image"
                     style={{ padding: "20px 50px" }}
@@ -181,7 +208,41 @@ class up extends Component {
                   </div>
                 </label>
               </div>
-               <div className="col-md-12 display-document"></div>
+               <div className="col-md-3">
+                <div className="form-element form-input" style ={{paddingTop:"40px"}}>
+                  <input
+                    name="title"
+                    id="field-uyzeji-352rnc-4rv3g1-bvlh88-9dewuz"
+                    className="form-element-field"
+                    placeholder=" "
+                    type="text"
+                    required
+                    value={this.state.title}
+                    onChange={e => this.handleChange(e)}
+                  />
+                  <div className="form-element-bar" />
+                  <label
+                    className="form-element-label"
+                    htmlFor="field-uyzeji-352rnc-4rv3g1-bvlh88-9dewuz"
+                  >
+                    Title{" "}
+                  </label>
+                  <small className="form-element-hint">
+                    Ex: Đơn xin đi học
+              </small>
+                </div>
+               </div>
+               <div className ="col-md-2">
+                <span style={{ marginTop: "65px",display:'table' }}> <Button
+                  variant="outlined"
+                  className="bt-cancel-apartment"
+                  onClick={e => this.uploadfile(e)}
+                 
+                >
+                  Upload
+                </Button></span>
+               
+               </div>
               <div className="col-md-4 fadeInUp animated">
                 <div className="button">
                   <input
@@ -194,6 +255,24 @@ class up extends Component {
                   />
                 </div>
               </div>
+            </div>
+            <div className ="row">
+            <div className ="col-md-12" style={{padding:'20px'}}>
+                <p style ={{fontSize:'24px',textAlign:'center'}}>File uploaded</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Link</th>
+                      <th scope="col">Time upload</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {renderupload}
+                  </tbody>
+                </table>
+            </div>
             </div>
           </div>
         );
