@@ -7,11 +7,15 @@ class up extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: '',
-            web3: "",
-            account: "",
-            GAS: 700000,
-            GAS_PRICE: 2000000000
+          url: "url",
+          web3: "",
+          contracts: null,
+          account: "",
+          title: "title",
+          time: new Date().toLocaleString(),
+          GAS: 700000,
+          GAS_PRICE: 2000000000,
+          data: []
         };
     }
 
@@ -64,13 +68,47 @@ class up extends Component {
                         });
                 }
             });
+            let dataA = [];
+            await contracts.events
+              .LogUpload(
+                {
+                  filter: { myaddress: `${this.state.account}` },
+                  fromBlock: 0,
+                  toBlock: "latest"
+                },
+                function(error, event) {
+                  if (event) {
+                    dataA.push(event.returnValues);
+                  }
+                }
+              )
+              .on("data", function(event) {
+                if (dataA) {
+                  let one_up = Object.values(
+                    dataA.reduce(
+                      (acc, cur) =>
+                        Object.assign(acc, {
+                          [cur.id]: cur
+                        }),
+                      {}
+                    )
+                  );
+                  that.setState({
+                    data: [...one_up]
+                  });
+                } else {
+                  alert("No data");
+                }
+              });
+            let dataB = [];
         };
         getContract(data);
         let ref_top = this.refs.ref_top;
         window.scrollTo(0, 0);
     }
    
-    captureFile = (event) => {
+    captureFile =  (event) => {
+       
         event.stopPropagation()
         event.preventDefault()
         const file = event.target.files[0]
@@ -78,58 +116,86 @@ class up extends Component {
         let reader = new window.FileReader()
         reader.readAsArrayBuffer(file)
         reader.onloadend = () => this.convertToBuffer(reader)
+        
+
     };
     convertToBuffer = async (reader) => {
-        const buffer = await Buffer.from(reader.result);
+       let {
+         contracts,
+         title,
+         time,
+         account,
+         GAS,
+         GAS_PRICE
+       } = this.state;
+       let _url;
+        const buffer =  Buffer.from(reader.result);
         await ipfs.add(buffer, (err, ipfsHash) => {
             console.log(ipfsHash)
-            this.setState({ file: 'https://gateway.ipfs.io/ipfs/' + ipfsHash[0].hash });
+            _url = 'https://gateway.ipfs.io/ipfs/' + ipfsHash[0].hash ;
+            this.setState({ url: _url });
+             contracts.methods
+               .Uploadfile(title, _url, time)
+               .send(
+                 { from: `${account}`, gas: GAS, gasPrice: `${GAS_PRICE}` },
+                 function(err, result) {
+                   console.log(result);
+                 }
+               )
+               .once("receipt", receipt => {
+                 alert("You just create");
+               }); 
         })
+        
 
     };
    
     render() {
       console.log(this.state)
         return (
-            <div className="container imgbg" ref="ref_top">
-                <div className="clearfix">
-                    <br />
-                    <br />
-                    <br />
-                </div>
-                <h5
-                    className="titlename-data fadeInLeft animated"
-                    style={{ paddingTop: "10px", paddingBottom: "40px" }}
-                >
-                   Up load
-                </h5>
-                <div className="add-apartment row">
-                    <div className="col-md-12">
-                        <label for="multi" className="label-add-image">
-                            <div className="body-add-image">
-                                <div className="content-add-image">
-                                    <span className="icon-add-image">
-                                        <AddIcon className="design-icon" />
-                                    </span>
-                                </div>
-                                <div className="add-title-image">Upload </div>
-                            </div>
-                        </label>
-                    </div>
-                    <div className="col-md-4 fadeInUp animated">
-                        <div className="button">
-                            <input
-                                type="file"
-                                id="multi"
-                                name="files[]"
-                                onChange={this.captureFile}
-                                multiple
-                                hidden
-                            />
-                        </div>
-                    </div>
-                </div>
+          <div className="container imgbg" ref="ref_top">
+            <div className="clearfix">
+              <br />
+              <br />
+              <br />
             </div>
+            <h5
+              className="titlename-data fadeInLeft animated"
+              style={{ paddingTop: "10px", paddingBottom: "40px" }}
+            >
+              Up load
+            </h5>
+            <div className="add-apartment row">
+              <div className="col-md-12">
+                <label for="multi" className="label-add-image">
+                  <div
+                    className="body-add-image"
+                    style={{ padding: "20px 50px" }}
+                  >
+                    <div className="content-add-image">
+                      <span className="icon-add-image">
+                        <AddIcon className="design-icon" />
+                      </span>
+                    </div>
+                    <div className="add-title-image">Upload </div>
+                  </div>
+                </label>
+              </div>
+               <div className="col-md-12 display-document"></div>
+              <div className="col-md-4 fadeInUp animated">
+                <div className="button">
+                  <input
+                    type="file"
+                    id="multi"
+                    name="files[]"
+                    onChange={this.captureFile}
+                    multiple
+                    hidden
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         );
     }
 }

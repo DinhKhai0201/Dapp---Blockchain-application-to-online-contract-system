@@ -38,6 +38,7 @@ class Check extends Component {
     let { signature, web3, msg, contracts,account } = this.state;
     let that = this;
     let msgsha = web3.utils.sha3(msg)
+    let dataUser =[]
     contracts.methods.verify(msgsha, signature).call({ from: `${account}` }).then(function (result) {
       console.log(result)
       contracts.events
@@ -48,21 +49,33 @@ class Check extends Component {
             toBlock: "latest"
           },
           function (error, event) {
+            if(event && event.returnValues) {
+              dataUser.push(event.returnValues);
+            }
           }
         )
         .on("data", function (event) {
-          if (event) {
-            toast.success("Success !", {
-              position: toast.POSITION.TOP_LEFT
-            });
-            that.setState({
-              data: event.returnValues,
-              signature: ''
-            });
-
+          if (dataUser && dataUser.length >0) {
+               let one_user = Object.values(
+                 dataUser.reduce(
+                   (acc, cur) =>
+                     Object.assign(acc, {
+                       [cur.myaddress]: cur
+                     }),
+                   {}
+                 )
+               );
+              
+               that.setState({
+                 data: one_user,
+                 signature: ""
+               });
           }
         })
         .on("changed", function (event) {
+           toast.success("Success !", {
+             position: toast.POSITION.TOP_LEFT
+           });
         })
         .on("error", function (error) {
           toast.error("No data !", {
@@ -74,18 +87,18 @@ class Check extends Component {
   render() {
     let { data, signature } = this.state;
     let fetch = "";
-    if (data && data !== "") {
+    if (data && data[0]) {
       fetch = (
         <div className="fetchsign row">
           <div>
             {" "}
-            <p>Account: {data.myaddress}</p>{" "}
+            <p>Account: {data[0].myaddress}</p>{" "}
           </div>
-          <p>Name: {data.firstname}</p>
-          <p>Phone: {data.phone}</p>
-          <p>Gmail: {data.gmail}</p>
-          <p>address: {data.address_live}</p>
-          <p>Id card: {data.identify}</p>
+          <p>Name: {data[0].firstname}</p>
+          <p>Phone: {data[0].phone}</p>
+          <p>Gmail: {data[0].gmail}</p>
+          <p>address: {data[0].address_live}</p>
+          <p>Id card: {data[0].identify}</p>
         </div>
       );
     }

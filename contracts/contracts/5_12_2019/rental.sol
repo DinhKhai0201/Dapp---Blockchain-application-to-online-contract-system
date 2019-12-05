@@ -3,8 +3,8 @@ import "./contractusers.sol";
 import "./contractapartments.sol";
 import "./contractreleaseagreement.sol";
 import "./contractverify.sol";
-
-contract Rental is User, Apartment, Releasegreement,Verify  {
+import "./contractupload.sol";
+contract Rental is User, Apartment, Releasegreement,Verify, Upload  {
     uint public userscount;
     uint public apartmentscount;
     uint public agreementscount;
@@ -46,11 +46,21 @@ contract Rental is User, Apartment, Releasegreement,Verify  {
         string landlordconfirmed,
         string rentorconfirmed
         ); 
+    event LogUpload
+	(
+	    uint indexed id,
+        address indexed myaddress,
+        string title,
+        string time_upload,
+        string url
+    
+	    );
 	constructor() public{
 	   contractcreator = msg.sender;
 	   userscount =0; 
 	   apartmentscount = 0;
 	   agreementscount = 0;
+	   upcount =0;
 	  
 	}
 	
@@ -118,7 +128,7 @@ contract Rental is User, Apartment, Releasegreement,Verify  {
         _user.phone = _phone;
          emit  AddUser
 	(
-	    userscount,
+	    _user.id,
         _addressuser,
         _identify,
         _firstname,
@@ -221,7 +231,37 @@ contract Rental is User, Apartment, Releasegreement,Verify  {
 	    );
        
     } 
-    
+      function Uploadfile
+    (
+   
+        string memory _title,
+        string memory _url,
+        string memory _date_upload
+       
+    ) 
+    public 
+    {
+        require(register[msg.sender] == true);
+        upcount = upcount + 1;
+        uploads[upcount] = Uploads (
+            upcount,
+            msg.sender,
+           _title,
+           _url,
+           _date_upload
+           
+        );
+      emit LogUpload
+	(
+	     upcount,
+            msg.sender,
+           _title,
+           _date_upload,
+           _url
+           
+	    );
+        
+    }
     function createAgreement
     (
         uint _idApartment,
