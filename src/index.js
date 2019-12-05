@@ -113,10 +113,11 @@ class Login extends Component {
         }) 
     }
     loginbt =({ history }) => {
-        let { account} = this.state
+        let { account,contracts} = this.state
         const obj = {
           address: account
         };
+        
         axios.post('http://localhost:4000/persons/login', obj)
           .then(res =>{
             console.log(res.data);
@@ -144,6 +145,7 @@ class Login extends Component {
         .then(res => {toast("Wow so easy !")});
   } 
     render() {
+      
         return (
           <div className="cont_principal cont_principall ">
             <ToastContainer />
@@ -498,7 +500,7 @@ render(
           <PrivateRoute path="/chats" component={massage} />
           <PrivateRoute path="/edits/:address/:id" component={PageEdit} />
           <Route path="/login" component={Login} />
-          <Route path="/upload" component={up} />
+          <PrivateRoute path="/upload" component={up} />
           <Route path="/register" component={Register} />
           <Route path="*" exact={true} component={Notfound} />
           <Redirect from="*" to="/404" />

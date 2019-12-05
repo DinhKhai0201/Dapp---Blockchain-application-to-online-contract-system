@@ -110,7 +110,7 @@ class up extends Component {
     }
    
     captureFile =  (event) => {
-       
+      
         event.stopPropagation()
         event.preventDefault()
         const file = event.target.files[0]
@@ -122,7 +122,8 @@ class up extends Component {
 
     };
     convertToBuffer = async (reader) => {
-      
+      let check = await this.state.contracts.methods.register(this.state.account).call({ from: `${this.state.account}` });
+      console.log(check)
        let _url;
         const buffer =  Buffer.from(reader.result);
         await ipfs.add(buffer, (err, ipfsHash) => {
@@ -132,7 +133,6 @@ class up extends Component {
             
         })
         
-
     };
     handleChange = e => {
       this.setState({
