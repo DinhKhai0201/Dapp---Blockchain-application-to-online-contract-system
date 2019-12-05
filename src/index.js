@@ -11,6 +11,7 @@ import {
 // page
 import App from './components/home/App'
 import PageAdd from './components/add/PageAdd'
+import PageEdit from './components/edit_properties/edit'
 import Detail from './components/detail/Detail'
 import Myaccount from "./components/account/Myaccount";
 import massage from './components/chats/massage'
@@ -19,6 +20,7 @@ import contract from './components/contract/contract'
 import Check from './components/check/check'
 import Notfound from './components/pages/notfound'
 import Footer from './components/pages/footer' 
+import up from './components/upload/up'
 // end page
 import './static/css/login.css'
 import "./static/css/response.css";
@@ -32,7 +34,11 @@ import axios from 'axios';
 import ipfs from './components/utils/ipfs'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+if (window.ethereum) {
+  window.ethereum.on("accountsChanged", function (accounts) {
+    window.location.reload();
+  });
+}
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -193,7 +199,7 @@ class Register extends Component {
       lastname: "",
       email: "",
       phone: "",
-      gender: true,
+      gender: 0,
       address: "",
       ipfshash: "",
       idcard: "",
@@ -483,7 +489,9 @@ render(
           <Route path="/contract/:id" component={contract} />
           <PrivateRoute path="/my" component={Myaccount} />
           <PrivateRoute path="/chats" component={massage} />
+          <PrivateRoute path="/edits/:address/:id" component={PageEdit} />
           <Route path="/login" component={Login} />
+          <Route path="/upload" component={up} />
           <Route path="/register" component={Register} />
           <Route path="*" exact={true} component={Notfound} />
           <Redirect from="*" to="/404" />

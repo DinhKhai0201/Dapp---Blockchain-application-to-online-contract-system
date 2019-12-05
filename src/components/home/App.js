@@ -45,14 +45,17 @@ class App extends Component {
             fromBlock: 0,
             toBlock: 'latest'
         }, function(error, event){ 
-          if (dataA) {
+          if (event) {
             dataA.push(event.returnValues);
           }
          })
         .on('data', function(event){
+          let one_apart = Object.values(dataA.reduce((acc, cur) => Object.assign(acc, {
+            [cur.id]: cur
+          }), {}))
           that.setState({
-            data: dataA,
-            datafilter: dataA
+            data: one_apart,
+            datafilter: one_apart
           })
         })
         .on('changed', function(event){
@@ -257,7 +260,7 @@ class App extends Component {
               key={key}
               des={value.description}
               name={value.name}
-              price={value.fee}
+              price={(value.fee).split("_")[0]}
               address={value.address_apartment}
               ipfsHash={value.ipfsHash.split("_")[0]}
               id={parseInt(value.id)}

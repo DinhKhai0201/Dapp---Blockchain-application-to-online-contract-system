@@ -157,7 +157,7 @@ class Detail extends Component {
       yearbuild = (
         <p className="des-year">
           <HomeIcon />
-          Yearbuild: {data[0].returnValues.yearbuild}
+          Yearbuild: {(data[0].returnValues.fee).split("_")[1]}
         </p>
       );
       if (data[0].returnValues._ApartmentStatus == 0) {
@@ -193,7 +193,7 @@ class Detail extends Component {
         <p className="des-year">
           <AttachMoneyIcon />
           Price:{" "}
-          {data[0].returnValues.fee
+          {(data[0].returnValues.fee).split("_")[0]
             .toString()
             .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}{" "}
           VND

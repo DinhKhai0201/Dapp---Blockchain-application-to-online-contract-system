@@ -119,14 +119,16 @@ class PageAdd extends Component {
       GAS_PRICE
     } = this.state;
     let des = [bed, room, bath, description];
+    let fee_year =[fee, yearbuild].join("_");
+    console.log(fee_year)
     dess = des.join("_");
     pictures =tmp_file.join("_")
     contracts.methods
       .addApartment(
         name,
         dess,
-        fee,
-        yearbuild,
+        fee_year,
+        // yearbuild,
         address,
         pictures,
         account,

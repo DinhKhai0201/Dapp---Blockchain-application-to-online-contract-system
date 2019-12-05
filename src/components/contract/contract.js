@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import "../../static/css/contract.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import md5 from "md5";
 class contract extends React.Component {
     constructor(props) {
         super(props);
@@ -77,18 +78,27 @@ class contract extends React.Component {
                                         }
                                     }
                                 )
-
+                            let dataC =[]
                            contracts.events.AddApartment({
                                filter: { id: `${event.returnValues.idApartment}` },
                                 fromBlock: 0,
                                 toBlock: 'latest'
                             }, function (error, event) {
                                 if (event) {
-                                    that.setState({
-                                        dataApartment: event.returnValues,
-                                    })
+                                  dataC.push(event.returnValues)
                                 }
-                            })
+                           }).on("data", function (event) {
+                             if (dataC && dataC.length >0) {
+                               let one_apart = Object.values(dataC.reduce((acc, cur) => Object.assign(acc, {
+                                 [cur.id]: cur
+                               }), {}))
+                               that.setState({
+                                 dataApartment: [...one_apart],
+                               })
+                             } else {
+                               alert("No data")
+                             }
+                           })
                         }
                     }
                 )
@@ -132,23 +142,25 @@ class contract extends React.Component {
         let msgsha = web3.utils.sha3(msg)
         let check = await contracts.methods.isSigned(account, msgsha, rentorsign).call({ from: `${this.state.account}` })
         console.log(check)
-        if (pass === password ) {
-            if (rentorsign !== '') {
-                if(check == true){
-                  contracts.methods.rentorConfirmed(dataAgree.id, rentorsign).send({ from: `${account}` }, function (err, result) {
-                    console.log(result)
-                  }).once('receipt', (receipt) => {
-                    alert("You just create");
-                  })  
-                } else {
-                  alert("Warning: Not signature of landlord");
-                }
-               
+        if (pass === md5(password)) {
+          if (rentorsign !== "") {
+            if (check == true) {
+              contracts.methods
+                .rentorConfirmed(dataAgree.id, rentorsign)
+                .send({ from: `${account}` }, function(err, result) {
+                  console.log(result);
+                })
+                .once("receipt", receipt => {
+                  alert("You just create");
+                });
             } else {
-                alert("Signature before accept");
+              alert("Warning: Not signature of landlord");
             }
+          } else {
+            alert("Signature before accept");
+          }
         } else {
-            alert("Password wrong");
+          alert("Password wrong");
         }
     }
     // save =()=>{
@@ -187,6 +199,8 @@ class contract extends React.Component {
         let _year;
         let range_start;
         let range_end;
+        let fee;
+        let _address_apartment;
         if (dataAgree && dataAgree.description){
             _today = ((((dataAgree.description).split("_"))[0]).split(","))[0]
             _date = (_today.split("/"))[1]
@@ -195,7 +209,12 @@ class contract extends React.Component {
             range_start = ((dataAgree.description).split("_"))[1]
           range_end = ((dataAgree.description).split("_"))[2]
         }
-           
+      if (dataApartment[0] && dataApartment[0].fee) {
+        fee = dataApartment[0].fee.split('_')[0]
+      }
+      if (dataApartment[0] && dataApartment[0].address_apartment) {
+        _address_apartment = dataApartment[0].address_apartment;
+      }
         return (
           <div className="container print">
             <ToastContainer />
@@ -467,7 +486,7 @@ class contract extends React.Component {
               </span>
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium", color: "orange" }}>
-                  {dataApartment.address_apartment}{" "}
+                  {_address_apartment}{" "}
                 </span>
               </span>
             </p>
@@ -534,7 +553,7 @@ class contract extends React.Component {
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
-                  1. Giá cho thuê: {dataApartment.fee} VNĐ/ tháng{" "}
+                  1. Giá cho thuê: {fee} VNĐ/ tháng{" "}
                 </span>
               </span>
             </p>
@@ -548,7 +567,7 @@ class contract extends React.Component {
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
-                  <em>(Rental fee: {dataApartment.fee}</em>
+                  <em>(Rental fee: {fee}</em>
                 </span>
               </span>
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
@@ -627,7 +646,7 @@ class contract extends React.Component {
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
                   a) Tiền đặt cọc : Bên B sẽ đặt cọc cho Bên Cho Thuê Nhà số
-                  tiền là {dataApartment.fee} VNĐ{" "}
+                  tiền là {fee} VNĐ{" "}
                 </span>
               </span>
             </p>
@@ -647,7 +666,7 @@ class contract extends React.Component {
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
                   {" "}
-                  {dataApartment.fee}{" "}
+                  {fee}{" "}
                 </span>
               </span>
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
@@ -690,7 +709,7 @@ class contract extends React.Component {
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
-                  b) Tiền thuê Nhà : {dataApartment.fee}{" "}
+                  b) Tiền thuê Nhà : {fee}{" "} VND
                 </span>
               </span>
             </p>
@@ -705,14 +724,14 @@ class contract extends React.Component {
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
-                  Số tiền: {dataApartment.fee} VNĐ
+                  Số tiền: {fee} VNĐ
                 </span>
               </span>
             </p>
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
-                  <em>(Rental fee: {dataApartment.fee} </em>
+                  <em>(Rental fee: {fee} </em>
                 </span>
               </span>
             </p>
@@ -729,7 +748,7 @@ class contract extends React.Component {
             <p align="left">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>
                 <span style={{ fontSize: "medium" }}>
-                  <em>Amount: {dataApartment.fee} </em>
+                  <em>Amount: {fee} </em>
                 </span>
               </span>
               <span style={{ fontFamily: '"Times New Roman", serif' }}>

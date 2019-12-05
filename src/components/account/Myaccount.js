@@ -4,6 +4,7 @@ import "../../static/css/account.css";
 import "../../static/css/sign.css";
 import Button from "@material-ui/core/Button";
 import { Link } from 'react-router-dom'
+import md5 from "md5";
 
 class Myaccount extends Component {
   constructor(props) {
@@ -52,19 +53,22 @@ class Myaccount extends Component {
       }, function (error, event) {
           if (event) {
             dataA.push(event.returnValues);
-            that.setState({
-              dataApartment: [...dataA],
-            })
+            
+        }
+      }).on("data", function (event) {
+        if (dataA) {
+          let one_apart = Object.values(dataA.reduce((acc, cur) => Object.assign(acc, {
+            [cur.id]: cur
+          }), {}))
+          that.setState({
+            dataApartment: [...one_apart],
+          })
+        } else {
+          alert("No data")
         }
       })
-        .on('data', function (event) {
-          // console.log(event)
-        })
-        .on('changed', function (event) {
-          // remove event from local database
-        })
-        .on('error', console.error);
       let dataB = [];
+     
       await contracts.events
         .AddUser(
           {
@@ -81,11 +85,6 @@ class Myaccount extends Component {
             }
           }
         )
-        .on("data", function (event) {
-        })
-        .on("changed", function (event) {
-        })
-        .on("error", console.error);
       let dataC = [];
 
       await contracts.events
@@ -105,13 +104,6 @@ class Myaccount extends Component {
             }
           }
         )
-        .on("data", function (event) {
-
-        })
-        .on("changed", function (event) {
-          // remove event from local database
-        })
-        .on("error", console.error);
       let dataD = [];
       await contracts.events
         .Agreement(
@@ -129,16 +121,9 @@ class Myaccount extends Component {
             }
           }
         )
-        .on("data", function (event) {
-
-        })
-        .on("changed", function (event) {
-          // remove event from local database
-        })
-        .on("error", console.error);
     };
 	getContract(data);
-	 window.ethereum.on("accountsChanged", function(accounts) {
+	window.ethereum.on("accountsChanged", function(accounts) {
 		window.location.reload();
   });
   window.scrollTo(0, 0);
@@ -234,7 +219,7 @@ class Myaccount extends Component {
           data_tmp[0].id,
           dess,
           landlordsign,
-          _password,
+          md5(_password),
           address_tenant
         )
         .send(
@@ -249,9 +234,10 @@ class Myaccount extends Component {
     }
   }
   render() {
-    let { dataLandlord, dataTenent, time_duration_start, time_duration_end, data_tmp, today, dataAgreeL, dataAgreeT} = this.state
+    let { dataLandlord, dataTenent, time_duration_start, time_duration_end, data_tmp, today, dataAgreeL, dataAgreeT, dataApartment} = this.state
     console.log(this.state)
-    let dataAprt = this.state.dataApartment.map(element => { return (
+
+    let dataAprt = dataApartment.map(element => { return (
         <div key={element.id} className="conservation-list-wrap">
         <div className="container">
           <div className="container-item">
@@ -269,7 +255,7 @@ class Myaccount extends Component {
               </div>
               <div className="last-message-info">
                 <div className="message-text font-s webkit-oriented-vertical">
-                  <span className="webkit-oriented-vertical">{element.fee.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</span>
+                  <span className="webkit-oriented-vertical">{(element.fee).split("_")[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} VND</span>
                 </div>
                 {/* <div className="message-date text-grey font-xs">8:10 PM, 11/25/19</div> */}
                 </div>
@@ -291,6 +277,14 @@ class Myaccount extends Component {
                   Detail
                         </Button></Link>
                         </span>
+              <span><Link className="remove-underline" to={`/edits/${element._landlord}/${element.id} `}>
+                <Button
+                  variant="outlined"
+                  className="bt-agree"
+                >
+                  Edit
+                        </Button></Link>
+              </span>
             </div>
             
           </div>
@@ -538,7 +532,7 @@ class Myaccount extends Component {
                        
                         <div className="form-element form-input">
                           <input
-                            name="yearbuild"
+                            name="gmail"
                             id="field-uyzeji-352rnc-4rv3g1-bvlh88-9dewuz"
                             className="form-element-field"
                             placeholder=" "
@@ -787,9 +781,9 @@ class Myaccount extends Component {
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>Party B will be given priority to extend the contract if Party A continues to have his/her house rent (The rental price depends on that time)</em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><strong>ĐIỀU 2 : GIÁ THUÊ &amp; CÁC CHI PHÍ KHÁC</strong></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em><strong>(ARTICLE 2: RENTAL FEE &amp; EXTRA COSTS)</strong></em></span></span></p>
-                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>1. Giá cho thuê: {(data_tmp && data_tmp[0]) ? data_tmp[0].fee : ''} VNĐ/ tháng </span></span></p>
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>1. Giá cho thuê: {(data_tmp && data_tmp[0]) ? (data_tmp[0].fee.split("_")[0]) : ''} VNĐ/ tháng </span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>(Không bao gồm các chi phí thuế)</span></span></p>
-                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Rental fee: </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}> {(data_tmp && data_tmp[0]) ? data_tmp[0].fee : ''} </span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>VNĐ/month </em></span></span></p>
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Rental fee: </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}> {(data_tmp && data_tmp[0]) ? (data_tmp[0].fee.split("_")[0]) : ''} </span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>VNĐ/month </em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Not including the cost of taxes.)</em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>2. Chi phí tiêu dùng điện, nước, internet và truyền hình cáp Bên B phải trả kịp thời và đầy đủ hàng tháng theo khối lượng thực tế sử dụng dựa vào hoá đơn.</span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>The charge for using electricity, water, internet and cable TV shall be paid by the Party B in time and sufficiently according to the actual consumption based on the bills. </em></span></span></p>
@@ -801,18 +795,18 @@ class Myaccount extends Component {
                           <p align="left"><span style={{ color: '#000000' }}><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Thời hạn thanh toán </span></span></span><span style={{ color: '#000000' }}><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Payment time)</em></span></span></span></p>
                         </li>
                       </ol>
-                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>a) Tiền đặt cọc : Bên B sẽ đặt cọc cho Bên Cho Thuê Nhà số tiền là {(data_tmp && data_tmp[0]) ? data_tmp[0].fee : ''}  VNĐ </span></span></p>
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>a) Tiền đặt cọc : Bên B sẽ đặt cọc cho Bên Cho Thuê Nhà số tiền là {(data_tmp && data_tmp[0]) ? (data_tmp[0].fee.split("_")[0]) : ''}  VNĐ </span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>ngay khi ký hợp đồng thuê Nhà này.</span></span></p>
-                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Security deposit: The Party B will pay </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}> {(data_tmp && data_tmp[0]) ? data_tmp[0].fee : ''} </span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>VNĐ </em></span></span></p>
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Security deposit: The Party B will pay </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}> {(data_tmp && data_tmp[0]) ? (data_tmp[0].fee.split("_")[0]) : ''} </span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>VNĐ </em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>as soon as signing this lease contract)</em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Khoản tiền đặt cọc này sau khi đã trừ đi các khoản chi phí hư hại của trang thiết bị trong Nhà hoặc không bị hư hỏng sẽ được hoàn lại cho Bên B trong ngày kết thúc hợp đồng cùng với điều kiện Bên B phải hoàn tất mọi trách nhiệm nêu trong hợp đồng này.</span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Such amount of security deposit after deducting costs of impaired for indoor facility or not impaired will be refunded to Party B in days the proper termination of this present contract as long as Party B has fulfilled the liabilities stated hereby).</em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>b) Tiền thuê Nhà : </span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Đợt thanh toán đầu tiên: Bên B sẽ trả tiền thuê cho Bên Cho Thuê Nhà 1 tháng tiền thuê ngay khi chuyển vào ở.</span></span></p>
-                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Số tiền: {(data_tmp && data_tmp[0]) ? data_tmp[0].fee : ''}  VNĐ</span></span></p>
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>Số tiền: {(data_tmp && data_tmp[0]) ? (data_tmp[0].fee.split("_")[0]) : ''}  VNĐ</span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>(Rental fee: </em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>The first payment: The Party B will pay 1 month(s) rental fee in advance to The Party A as soon as moving in.)</em></span></span></p>
-                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>Amount: {(data_tmp && data_tmp[0]) ? data_tmp[0].fee : ''}  </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em> VNĐ</em></span></span></p>
+                      <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em>Amount: {(data_tmp && data_tmp[0]) ? (data_tmp[0].fee.split("_")[0]) : ''}  </em></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}></span></span><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em> VNĐ</em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><strong>ĐIỀU 4 : TRÁCH NHIỆM CỦA BÊN CHO THUÊ (BÊN A)</strong></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}><em><strong>(ARTICLE 4 : LESSOR’S (PARTY A’S) RESPONSIBILITIES)</strong></em></span></span></p>
                       <p align="left"><span style={{ fontFamily: '"Times New Roman", serif' }}><span style={{ fontSize: 'medium' }}>1. Đảm bảo và cam kết rằng căn Nhà nói trên thuộc quyền sở hữu của BÊN A, và BÊN A có đủ quyền hạn được cho thuê, BÊN A đảm bảo rằng căn Nhà này không bị tranh chấp.</span></span></p>
