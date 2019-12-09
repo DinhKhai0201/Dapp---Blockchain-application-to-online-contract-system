@@ -6,7 +6,7 @@
 	background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  width: 100%;
+  /*width: 100%;*/
   /* height: 600px; */
   filter: brightness(50%);
 }
@@ -224,4 +224,13 @@
  .modal-body {
 	 position: relative;
 }
- 
+.Gallery_pic_pic .Gallery_pic_pic_pic img{
+	height: 200px!important;
+	width: 250px!important;
+ }
+.react-images__header {
+	padding-top: 82px!important;
+}
+.react-images__positioner {
+	padding-top: 220px;
+}

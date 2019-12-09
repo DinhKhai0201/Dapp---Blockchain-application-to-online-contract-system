@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, useCallback, useState} from 'react'
 import { getContract } from '../utils/contractservice'
 import '../../static/css/detail.css'
 import Chip from '@material-ui/core/Chip';
@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import Gallery from "react-photo-gallery";
 import Carousel, { Modal, ModalGateway } from "react-images";
 class Detail extends Component {
   constructor(props) {
@@ -21,7 +22,9 @@ class Detail extends Component {
       web3: "",
       account: "",
       id: null,
-      data: null
+      data: null,
+      currentImage: 0,
+      viewerIsOpen: null
     };
   }
 
@@ -97,10 +100,11 @@ class Detail extends Component {
         <img
           src={data[0].returnValues.ipfsHash.split("_")[0]}
           alt={data[0].returnValues.ipfsHash.split("_")[0]}
+          style ={{width:"100%"}}
         />
       );
       sources = [...sources,...data[0].returnValues.ipfsHash.split("_")];
-    
+      
       address = (
         <h4 className="chip-detail address-apartment">
           {" "}
@@ -230,9 +234,9 @@ class Detail extends Component {
               </div>
             </div>
           </div>
-          <div className="">
-            <div className="col-md-9">
-             
+          <div className="Gallery_pic_pic">
+            <div className="Gallery_pic_pic_pic">
+               <Gallery_pic photo ={sources}/>
             </div>
           </div>
           <div className=" description container">
@@ -270,35 +274,55 @@ class Detail extends Component {
     );
   }
 }
-const gutter = 2;
 
-const Gallery = (props) => (
-  <div
-    style={{
-      overflow: "hidden",
-      marginLeft: -gutter,
-      marginRight: -gutter
-    }}
-   {...props}
-  />
-);
 
-const Image = props => (
-  <div
-    style={{
-      backgroundColor: "#eee",
-      boxSizing: "border-box",
-      float: "left",
-      margin: gutter,
-      overflow: "hidden",
-      position: "relative",
-      width: `calc(25% - ${gutter * 2}px)`,
 
-      ":hover": {
-        opacity: 0.9
+const Gallery_pic = ({photo}) =>{
+  console.log('photo', photo)
+   let c ={}
+  let photos =  photo.map((value, key) => { 
+     let b ={
+       src: value,
+       height:0.1,
+       width:0.1,
+       key:key
       }
-    }}
-    {...props}
-  />
-);
+        b
+     )
+    }
+     ); 
+  console.log(photos)
+  const [currentImage, setCurrentImage] = useState(0);
+  const [viewerIsOpen, setViewerIsOpen] = useState(false);
+
+  const openLightbox = useCallback((event, { photos, index }) => {
+    setCurrentImage(index);
+    setViewerIsOpen(true);
+  }, []);
+
+  const closeLightbox = () => {
+    setCurrentImage(0);
+    setViewerIsOpen(false);
+  };
+  return (
+    <div>
+      <Gallery photos={photos} onClick={openLightbox} />
+      <ModalGateway>
+        {viewerIsOpen ? (
+          <Modal onClose={closeLightbox}>
+            <Carousel
+              currentIndex={currentImage}
+              views={photos.map(x => ({
+                ...x,
+                srcset: x.srcSet,
+                caption: x.title
+              }))}
+            />
+          </Modal>
+        ) : null}
+      </ModalGateway>
+    </div>
+  );
+}
+
 export default Detail
