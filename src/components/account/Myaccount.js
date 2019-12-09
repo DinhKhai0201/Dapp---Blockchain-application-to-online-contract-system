@@ -213,7 +213,7 @@ class Myaccount extends Component {
     } = this.state;
     let des = [today, time_duration_start,time_duration_end]
     let dess = des.join('_');
-
+    console.log( md5(_password))
     if (landlordsign !== '' && data_tmp && data_tmp[0] ) {
       contracts.methods
         .createAgreement(

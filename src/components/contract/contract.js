@@ -140,6 +140,7 @@ class contract extends React.Component {
       let { dataAgree, password, rentorsign, account, contracts, msg, web3} = this.state
         let pass = dataAgree.passeord
         let msgsha = web3.utils.sha3(msg)
+        console.log( md5(password))
         let check = await contracts.methods.isSigned(account, msgsha, rentorsign).call({ from: `${this.state.account}` })
         console.log(check)
         if (pass === md5(password)) {

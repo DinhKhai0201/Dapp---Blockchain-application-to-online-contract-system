@@ -287,10 +287,10 @@ const Gallery_pic = ({photo}) =>{
        width:0.1,
        key:key
       }
+      return (
         b
      )
-    }
-     ); 
+    }); 
   console.log(photos)
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
