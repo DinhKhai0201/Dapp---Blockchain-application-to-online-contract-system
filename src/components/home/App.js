@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logoS from '../../static/search-var-flat.png'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +28,8 @@ class App extends Component {
       datafilter:[],
       sort:'all',
       valueprice:[1,1000000000],
-      type_search:''
+      type_search:'',
+      clear_search:false
     };
   }
 
@@ -98,16 +100,31 @@ class App extends Component {
     })
   }
   handleChanges = (e) => {
-    let { type_search} = this.state
+    // let { type_search} = this.state
     this.setState({
       [e.target.name]: e.target.value
     })
-    let dataold = [];
-    let datanew =[]
-    if (e.target.value !== '') {
+    // let dataold = [];
+    // let datanew =[]
+    // if (e.target.value !== '') {
+     
+    // } 
+    // else {
+    //    this.setState({
+    //       datafilter: this.state.data
+    //     })
+    //   // this.getdata(this.state.contracts, dataold, this);
+    // }
+
+  }
+  searchTocCheck =()=> {
+      let { type_search} = this.state
+      let dataold = [];
+      let datanew =[]
+      console.log(this.state.search, type_search)
       if (type_search === 'name') {
-        datanew = this.state.data.filter(dataz => dataz.name.toLowerCase().includes(`${this.state.search}`))
-        console.log(datanew)
+         datanew = this.state.data.filter(dataz => dataz.name.toLowerCase().includes(`${this.state.search}`))
+      
       } else if (type_search === 'address') {
         datanew = this.state.data.filter(dataz =>dataz.address_apartment.toLowerCase().includes(`${this.state.search}`))
       } else {
@@ -116,14 +133,7 @@ class App extends Component {
       this.setState({
         datafilter: datanew
       })
-    } 
-    else {
-       this.setState({
-          datafilter: this.state.data
-        })
-      // this.getdata(this.state.contracts, dataold, this);
-    }
-
+      window.scroll({top: 600, left: 0, behavior: 'smooth' });
   }
   setFiltertype =(_number) => {
     this.setState({
@@ -258,7 +268,7 @@ class App extends Component {
   render() {
     let display = this.state.datafilter.map((value, key) => {
       return (
-          <div class="col-md-3 col-sm-6 col-xs-12">
+          <div className="col-md-3 col-sm-6 col-xs-12"  key={key}>
             <RecipeReviewCard
               key={key}
               des={value.description}
@@ -281,10 +291,17 @@ class App extends Component {
             <div className="choose-type">
               <div
                 className="search-tt "
+                id={this.state.type_search === "" ? "active-search" : ""}
+                onClick={() => this.setFilter("")}
+              >
+                <span >All</span>
+              </div>
+              <div
+                className="search-tt "
                 id={this.state.type_search === "name" ? "active-search" : ""}
                 onClick={() => this.setFilter("name")}
               >
-                <span>Name</span>
+                <span >Name</span>
               </div>
               <div
                 className="search-tt"
@@ -294,11 +311,15 @@ class App extends Component {
                 <span>Address</span>
               </div>
             </div>
-            <input
-              className="search rm-outline"
-              name="search"
-              onChange={e => this.handleChanges(e)}
-            ></input>
+            <div className ="search-and-button">
+               <input
+                className="search rm-outline"
+                name="search"
+                placeHolder ="Search"
+                onChange={e => this.handleChanges(e)}
+              ></input>
+              <img src ={logoS} className ="bt-img-search" onClick ={this.searchTocCheck}/>
+            </div>
             <h6 className="addaprt">Or Add your apartment</h6>
             <p className="button-center">
               <Link
@@ -329,7 +350,7 @@ class App extends Component {
               <div className="col-md-8">
                 <div className="filter">
                   <Button
-                    variant="outlined "
+                    variant="outlined"
                     color="primary"
                     onClick={this.handletoggle}
                   >
