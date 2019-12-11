@@ -113,12 +113,15 @@ class App extends Component {
       } else {
         datanew = this.state.data.filter(dataz => dataz.name.toLowerCase().includes(`${this.state.search}`) || dataz.address_apartment.toLowerCase().includes(`${this.state.search}`))
       }
-     
       this.setState({
         datafilter: datanew
       })
-    } else {
-      this.getdata(this.state.contracts, dataold, this);
+    } 
+    else {
+       this.setState({
+          datafilter: this.state.data
+        })
+      // this.getdata(this.state.contracts, dataold, this);
     }
 
   }

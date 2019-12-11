@@ -132,14 +132,18 @@ class chat extends Component {
     })
   }
   newMessage=(m)=> {
+    let {account} = this.state;
     // console.log(m.data)
-   this.setState({ messages: [...this.state.messages, m.data]});
-   console.log(m.data)
-   if ( this.refs.chat_chat) {
-      let chat_chat = this.refs.chat_chat;
-      chat_chat.scrollTop = chat_chat.scrollHeight; 
-   }
-    
+    if ( m.data.add_to == account || m.data.add_from == account) {
+       this.setState({ messages: [...this.state.messages, m.data]});
+       console.log(m.data)
+       if ( this.refs.chat_chat) {
+          let chat_chat = this.refs.chat_chat;
+          chat_chat.scrollTop = chat_chat.scrollHeight; 
+       }
+    }
+  console.log(account, m.data.add_to,m.data.add_from,account == m.data.to,account == m.data.add_from)
+  
   //  if (
   //    m.data.add_to == this.state.account &&
   //    this.props.match.path !== "/chat/:address1/:address2"
@@ -153,12 +157,12 @@ class chat extends Component {
 	
   }
   //Gửi event socket newMessage với dữ liệu là nội dung tin nhắn
-  sendnewMessage(m) {
-    if (m.value) {
-      this.socket.emit("newMessage", m.value); 
-      m.value = "";
-    }
-  }
+  // sendnewMessage(m) {
+  //   if (m.value) {
+  //     this.socket.emit("newMessage", m.value); 
+  //     m.value = "";
+  //   }
+  // }
   render() {
    let {messages} = this.state 
    console.log(this.props)

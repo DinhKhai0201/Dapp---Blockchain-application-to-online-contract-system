@@ -5,6 +5,7 @@ import ipfs from '../utils/ipfs'
 import { getContract } from '../utils/contractservice'
 import AddIcon from '@material-ui/icons/Add';
 import Button from "@material-ui/core/Button";
+import Loading from '../loading';
 class up extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +18,8 @@ class up extends Component {
           time: new Date().toLocaleString(),
           GAS: 700000,
           GAS_PRICE: 2000000000,
-          data: []
+          data: [],
+          loading:''
         };
     }
 
@@ -110,7 +112,9 @@ class up extends Component {
     }
    
     captureFile =  (event) => {
-      
+        this.setState({
+          loading: false
+        })
         event.stopPropagation()
         event.preventDefault()
         const file = event.target.files[0]
@@ -128,11 +132,14 @@ class up extends Component {
         const buffer =  Buffer.from(reader.result);
         await ipfs.add(buffer, (err, ipfsHash) => {
             console.log(ipfsHash)
-            _url = 'https://gateway.ipfs.io/ipfs/' + ipfsHash[0].hash ;
-            this.setState({ url: _url });
-            
+            if (ipfsHash && ipfsHash[0]) {
+                _url = 'https://gateway.ipfs.io/ipfs/' + ipfsHash[0].hash ;
+                this.setState({
+                  url: _url ,
+                  loading: true
+                });
+            }
         })
-        
     };
     handleChange = e => {
       this.setState({
@@ -150,6 +157,9 @@ class up extends Component {
       GAS,
       GAS_PRICE
     } = this.state;
+    if (url == ''){
+        console.log("url null")
+    }
     contracts.methods
       .Uploadfile(title, url, time)
       .send(
@@ -165,7 +175,7 @@ class up extends Component {
 
     render() {
       console.log(this.state)
-      let { data} = this.state
+      let { data, loading} = this.state
       let renderupload ;
       if (data && data.length > 0) {
         renderupload =  data.map((value,k)=>{
@@ -233,14 +243,16 @@ class up extends Component {
                 </div>
                </div>
                <div className ="col-md-2">
-                <span style={{ marginTop: "65px",display:'table' }}> <Button
+                <span style={{ marginTop: "65px",display:'table' }}> 
+                {loading?(<Button
                   variant="outlined"
                   className="bt-cancel-apartment"
                   onClick={e => this.uploadfile(e)}
                  
                 >
                   Upload
-                </Button></span>
+                </Button>):(<Loading />)}
+                </span>
                
                </div>
               <div className="col-md-4 fadeInUp animated">

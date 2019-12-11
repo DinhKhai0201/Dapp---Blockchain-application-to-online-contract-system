@@ -12,7 +12,7 @@ class Check extends Component {
       contracts: "",
       web3: "",
       account: "",
-      data: "",
+      data: [],
       signature:''
     };
   }
@@ -35,27 +35,48 @@ class Check extends Component {
     });
   };
   check = async () => {
-    let { signature, web3, msg, contracts,account } = this.state;
+    await this.setState({
+      data:''
+    })
+    let { signature, web3, msg, contracts,account ,data} = this.state;
+    if (web3.utils.isHex(signature) == false) {
+        toast.error("Invalid input !\nInput must be a hex.", {
+          position: toast.POSITION.TOP_LEFT
+        });
+        return false
+    }
     let that = this;
     let msgsha = web3.utils.sha3(msg)
     let dataUser =[]
-    contracts.methods.verify(msgsha, signature).call({ from: `${account}` }).then(function (result) {
+    await contracts.methods.verify(msgsha, signature).call({ from: `${account}` })
+    .then(async (result)=> {
       console.log(result)
-      contracts.events
+      await contracts.events
         .AddUser(
           {
             filter: { myaddress: `${result}` },
             fromBlock: 0,
             toBlock: "latest"
           },
-          function (error, event) {
+          async (error, event)=> {
             if(event && event.returnValues) {
-              dataUser.push(event.returnValues);
+              await dataUser.push(event.returnValues);
             }
+            // if(data.length == 0) {
+            //     toast.warn("Invalid data !\nData not found!", {
+            //           position: toast.POSITION.TOP_LEFT
+            //         });
+            // } else if (data.length > 0) {
+            //     toast.success("Success", {
+            //           position: toast.POSITION.TOP_LEFT
+            //       });
+            //   }
           }
         )
         .on("data", function (event) {
+          
           if (dataUser && dataUser.length >0) {
+            console.log(dataUser.length)
                let one_user = Object.values(
                  dataUser.reduce(
                    (acc, cur) =>
@@ -70,19 +91,25 @@ class Check extends Component {
                  data: one_user,
                  signature: ""
                });
-          }
+          } 
+        
         })
         .on("changed", function (event) {
-           toast.success("Success !", {
-             position: toast.POSITION.TOP_LEFT
-           });
         })
         .on("error", function (error) {
           toast.error("No data !", {
             position: toast.POSITION.TOP_LEFT
           });
         });
+         console.log("97",dataUser.length)
+    }).catch((error) =>{
+        toast.error("Invalid input !", {
+          position: toast.POSITION.TOP_LEFT
+        });
     });
+    
+
+
   };
   render() {
     let { data, signature } = this.state;
@@ -102,6 +129,7 @@ class Check extends Component {
         </div>
       );
     }
+    console.log(data.length)
     return (
       <div
         className="container"

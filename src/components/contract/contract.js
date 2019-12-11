@@ -5,6 +5,7 @@ import "../../static/css/contract.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import md5 from "md5";
+
 class contract extends React.Component {
     constructor(props) {
         super(props);
@@ -164,33 +165,7 @@ class contract extends React.Component {
           alert("Password wrong");
         }
     }
-    // save =()=>{
-    //     let elems = document.querySelectorAll(".print");
-    //     let pdf = new jsPDF("portrait", "mm", "a4");
-    //     pdf.scaleFactor = 2;
-    //     let addPages = new Promise((resolve,reject)=>{
-    //         elems.forEach((elem, idx) => {
-    //             // Scaling fix set scale to 2
-    //             html2canvas(elem, {scale: "2"})
-    //             .then(canvas =>{
-    //                 if(idx < elems.length - 1){
-    //                 pdf.addImage(canvas.toDataURL("image/png"), 0, 0, 210, 297);
-    //                 pdf.addPage();
-    //                 } else {
-    //                 pdf.addImage(canvas.toDataURL("image/png"), 0, 0, 210, 297);
-    //                 console.log("Reached last page, completing");
-    //                 }
-    //         })
-            
-    //         setTimeout(resolve, 100, "Timeout adding page #" + idx);
-    //         })
-
-    //     })  
-    //     addPages.finally(() => {
-    //       console.log("Saving PDF");
-    //       pdf.save();
-    //     })
-    // }
+   
     render() {
         console.log(this.state)
         let {dataAgree, dataApartment, dataLandlord, dataTenent} = this.state
@@ -217,7 +192,7 @@ class contract extends React.Component {
         _address_apartment = dataApartment[0].address_apartment;
       }
         return (
-          <div className="container print">
+          <div className="container " id ="print">
             <ToastContainer />
             <p align="center">
               <span style={{ fontFamily: '"Times New Roman", serif' }}>

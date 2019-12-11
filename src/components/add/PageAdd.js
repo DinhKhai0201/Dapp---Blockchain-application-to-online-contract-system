@@ -26,7 +26,8 @@ class PageAdd extends Component {
       room: 1,
       bath: 1,
       GAS: 700000,
-      GAS_PRICE: 2000000000
+      GAS_PRICE: 2000000000,
+      loading:false
     };
   }
 
