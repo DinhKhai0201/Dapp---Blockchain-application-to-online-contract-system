@@ -621,3 +621,7 @@ select.form-element-field {
     border: 1px solid;
 }
 /* end add and cancel */
+.fix-loader {
+    display: table;
+    margin: auto 10px;
+}

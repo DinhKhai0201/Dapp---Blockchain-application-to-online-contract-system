@@ -20,7 +20,9 @@ class contract extends React.Component {
             rentorsign: '',
             id:'',
             password: '',
-          msg:'Tôi chấp nhập điều khooản và kí để tạo hợp đồng \n I accept the terms and conditions to sign this contract'
+            msg:'Tôi chấp nhập điều khooản và kí để tạo hợp đồng \n I accept the terms and conditions to sign this contract',
+	         GAS: 1000000,
+      	    GAS_PRICE: 2500000000,
         };
     }
 
@@ -138,7 +140,7 @@ class contract extends React.Component {
       //       );
     }
     acceptAgreement = async () => {
-      let { dataAgree, password, rentorsign, account, contracts, msg, web3} = this.state
+      let { dataAgree, password, rentorsign, account, contracts, msg, web3, GAS, GAS_PRICE} = this.state
         let pass = dataAgree.passeord
         let msgsha = web3.utils.sha3(msg)
         console.log( md5(password))
@@ -149,7 +151,7 @@ class contract extends React.Component {
             if (check == true) {
               contracts.methods
                 .rentorConfirmed(dataAgree.id, rentorsign)
-                .send({ from: `${account}` }, function(err, result) {
+                .send({ from: `${account}`,gas: GAS, gasPrice: `${GAS_PRICE}` }, function(err, result) {
                   console.log(result);
                 })
                 .once("receipt", receipt => {

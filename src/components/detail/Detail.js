@@ -78,7 +78,7 @@ class Detail extends Component {
   };
 
   render() {
-    let { data, account, sources, lightboxIsOpen, selectedIndex } = this.state;
+    let { data, account, sources } = this.state;
     console.log(this.state)
     let picture;
     let name;
@@ -113,7 +113,8 @@ class Detail extends Component {
       );
       name = <h1 className="name-info"> {data[0].returnValues.name} </h1>;
       _landlord = <span> {data[0].returnValues._landlord}</span>;
-      if (data[0].returnValues._landlord !== account) {
+      if (data[0].returnValues._landlord.toLowerCase() != account) {
+        console.log(data[0].returnValues._landlord.toLowerCase(),account,data[0].returnValues._landlord.toLowerCase() == account)
         bt = (
           <Button
             variant="outlined"
@@ -166,7 +167,7 @@ class Detail extends Component {
       );
       if (data[0].returnValues._ApartmentStatus == 0) {
         status = (
-          <p className="chip-detail-status">
+          <p className="chip-detail-status chip-detail-status-open">
             <BarChartIcon />
             Status: Open
           </p>
@@ -187,7 +188,7 @@ class Detail extends Component {
         );
       } else {
         status = (
-          <p className="chip-detail-status">
+          <p className="chip-detail-status chip-detail-status-close">
             <BarChartIcon />
             Status: Closed
           </p>
@@ -279,7 +280,6 @@ class Detail extends Component {
 
 const Gallery_pic = ({photo}) =>{
   console.log('photo', photo)
-   let c ={}
   let photos =  photo.map((value, key) => { 
      let b ={
        src: value,

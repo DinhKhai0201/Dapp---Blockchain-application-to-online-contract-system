@@ -262,14 +262,15 @@ class Myaccount extends Component {
                 </div>
             </div>
             <div className ="agree-create">
-              <span><Button
-                variant="outlined"
-                className="bt-agree"
-                onClick={()=>this.createAgree(element.id)}
-              >
-                <a className="remove-underline" href="#popup1">Create Agreesment</a>
-                
-                        </Button></span>
+                <span>
+                {(element._ApartmentStatus == 0)?(<Button
+                    variant="outlined"
+                    className="bt-agree"
+                    onClick={()=>this.createAgree(element.id)}
+                >
+                    <a className="remove-underline" href="#popup1">Create Agreesment</a>
+                </Button>):""}
+                </span>
               <span><Link className ="remove-underline" to={`/detail/${element.id} `}>
                 <Button
                   variant="outlined"
@@ -278,13 +279,14 @@ class Myaccount extends Component {
                   Detail
                         </Button></Link>
                         </span>
-              <span><Link className="remove-underline" to={`/edits/${element._landlord}/${element.id} `}>
+              <span>
+              {(element._ApartmentStatus == 0)?( <Link className="remove-underline" to={`/edits/${element._landlord}/${element.id} `}>
                 <Button
                   variant="outlined"
                   className="bt-agree"
                 >
                   Edit
-                        </Button></Link>
+                </Button></Link>):""}
               </span>
             </div>
             

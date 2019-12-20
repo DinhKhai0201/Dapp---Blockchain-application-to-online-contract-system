@@ -18,7 +18,33 @@ class RecipeReviewCard extends Component {
     }
 
     render() {
-         let {ipfsHash, name, address, id ,price ,des} = this.props;
+         let {ipfsHash, name, address, id ,price ,des, status} = this.props;
+         let status_aprt;
+         if (status == 0) {
+            status_aprt = (
+              <p className="status-aprt status-aprt--open">
+                Open
+              </p>
+            );
+          } else if (status == 1) {
+            status_aprt = (
+             <p className="status-aprt">
+                Pending
+              </p>
+            );
+          } else if (status == 2) {
+            status_aprt = (
+              <p className="status-aprt">
+                Process
+              </p>
+            );
+          } else {
+            status_aprt = (
+             <p className="status-aprt status-aprt--closed">
+                Closed
+              </p>
+            );
+          }
         return (
           <Card className="card-s">
             {ipfsHash !== "" ? (
@@ -46,6 +72,7 @@ class RecipeReviewCard extends Component {
                 <AttachMoneyIcon />
                 {price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")} VND
               </Typography>
+              {status_aprt}
             </CardContent>
             <CardActions disableSpacing>
               <IconButton aria-label="add to favorites">

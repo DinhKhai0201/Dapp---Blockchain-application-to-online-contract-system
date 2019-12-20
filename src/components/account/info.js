@@ -147,7 +147,8 @@ class Info extends Component {
       gender,
       address,
       ipfshash,
-      identify
+      identify,
+      account
     } = this.state;
     console.log(this.state);
     return (
@@ -155,6 +156,24 @@ class Info extends Component {
         <div className="col-md-2"></div>
         <div className="col-md-5">
           <fieldset className="form-fieldset">
+           <div className="form-element form-input">
+              <input
+                name="accounttt"
+                id="field-uyzeji-352rnc-4rv3g1-bvlh88-9dewuz"
+                className="form-element-field"
+                placeholder=" "
+                type="text"
+                required
+                value={account}
+              />
+              <div className="form-element-bar" />
+              <label
+                className="form-element-label"
+                htmlFor="field-uyzeji-352rnc-4rv3g1-bvlh88-9dewuz"
+              >
+                Account address
+              </label>
+            </div>
             <div className="form-element form-input">
               <input
                 name="firstname"

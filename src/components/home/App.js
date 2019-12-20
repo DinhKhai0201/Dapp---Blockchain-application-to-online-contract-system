@@ -100,22 +100,9 @@ class App extends Component {
     })
   }
   handleChanges = (e) => {
-    // let { type_search} = this.state
     this.setState({
       [e.target.name]: e.target.value
     })
-    // let dataold = [];
-    // let datanew =[]
-    // if (e.target.value !== '') {
-     
-    // } 
-    // else {
-    //    this.setState({
-    //       datafilter: this.state.data
-    //     })
-    //   // this.getdata(this.state.contracts, dataold, this);
-    // }
-
   }
   searchTocCheck =()=> {
       let { type_search} = this.state
@@ -133,6 +120,9 @@ class App extends Component {
       this.setState({
         datafilter: datanew
       })
+      toast.success("Success filter!", {
+          position: toast.POSITION.TOP_LEFT
+      });
       window.scroll({top: 600, left: 0, behavior: 'smooth' });
   }
   setFiltertype =(_number) => {
@@ -154,50 +144,62 @@ class App extends Component {
    
   }
   filterpage =() => {
-    let {bed,room,type} =this.state
+    let {bed,room,type} =this.state;
+    console.log(bed,room,type,this.state.valueprice);
     if (bed == null && room == null && type ==null) {
-      let datanew = this.state.data.filter(dataz =>  dataz.fee > this.state.valueprice[0] && dataz.fee < this.state.valueprice[1] )
+      console.log(this.state.data)
+      let datanew = this.state.data.filter(dataz =>  dataz.fee.split('_')[0] > this.state.valueprice[0] && dataz.fee.split('_')[0] < this.state.valueprice[1] );
        this.setState({
           datafilter: datanew
         })
-        console.log("null");
+        console.log("price",datanew);
     } else if (bed == null && room == null) {
-        let datanew = this.state.data.filter(dataz => dataz._ApartmentType== this.state.type && dataz.fee > this.state.valueprice[0] && dataz.fee < this.state.valueprice[1] )
+        let datanew = this.state.data.filter(dataz => dataz._ApartmentType== this.state.type && dataz.fee.split('_')[0] > this.state.valueprice[0] && dataz.fee.split('_')[0] < this.state.valueprice[1] );
        this.setState({
           datafilter: datanew
         })
+        console.log("type",datanew);
     } else if (bed == null && type == null) {
-        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[1] == this.state.room  && (dataz.fee > this.state.valueprice[0] && dataz.fee < this.state.valueprice[1]))
+        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[1] == this.state.room  && (dataz.fee.split('_')[0] > this.state.valueprice[0] && dataz.fee.split('_')[0] < this.state.valueprice[1]));
        this.setState({
           datafilter: datanew
         })
+       console.log("room",datanew);
     } else if (room == null && type == null) { 
-        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[0] == this.state.bed  && (dataz.fee > this.state.valueprice[0] && dataz.fee < this.state.valueprice[1]))
+        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[0] == this.state.bed  && (dataz.fee.split('_')[0] > this.state.valueprice[0] && dataz.fee.split('_')[0] < this.state.valueprice[1]));
          this.setState({
             datafilter: datanew
           })
+         console.log("bed",datanew);
     } else if (room == null) { 
-        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[0] == this.state.bed  && dataz._ApartmentType== this.state.type && (dataz.fee > this.state.valueprice[0] && dataz.fee < this.state.valueprice[1]))
+        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[0] == this.state.bed  && dataz._ApartmentType== this.state.type && (dataz.fee.split('_')[0] > this.state.valueprice[0] && dataz.fee.split('_')[0] < this.state.valueprice[1]));
        this.setState({
           datafilter: datanew
         })
+       console.log("type,bed",datanew);
     } else if (bed == null) { 
-        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[1] == this.state.room && dataz._ApartmentType== this.state.type && (dataz.fee > this.state.valueprice[0] && dataz.fee < this.state.valueprice[1]))
+        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[1] == this.state.room && dataz._ApartmentType== this.state.type && (dataz.fee.split('_')[0] > this.state.valueprice[0] && dataz.fee.split('_')[0] < this.state.valueprice[1]));
        this.setState({
           datafilter: datanew
         })
+       console.log("type,room",datanew);
     } else if (type == null) { 
-        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[0] == this.state.bed  && ((dataz.description).split('_'))[1] == this.state.room  && (dataz.fee > this.state.valueprice[0] && dataz.fee < this.state.valueprice[1]))
+        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[0] == this.state.bed  && ((dataz.description).split('_'))[1] == this.state.room  && (dataz.fee.split('_')[0] > this.state.valueprice[0] && dataz.fee.split('_')[0] < this.state.valueprice[1]));
        this.setState({
           datafilter: datanew
         })
+       console.log("room,bed",datanew);
     } else {
-        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[0] == this.state.bed  && ((dataz.description).split('_'))[1] == this.state.room && dataz._ApartmentType== this.state.type && (dataz.fee > this.state.valueprice[0] && dataz.fee < this.state.valueprice[1]))
+        let datanew = this.state.data.filter(dataz => ((dataz.description).split('_'))[0] == this.state.bed  && ((dataz.description).split('_'))[1] == this.state.room && dataz._ApartmentType== this.state.type && (dataz.fee.split('_')[0] > this.state.valueprice[0] && dataz.fee.split('_')[0] < this.state.valueprice[1]))
        this.setState({
           datafilter: datanew
         })
+       console.log("all",datanew);
     }
     window.scroll({top: 1000, left: 0, behavior: 'smooth' });
+    toast.success("Success filter!", {
+      position: toast.POSITION.TOP_LEFT
+    });
     
   }
   clear =() => {
@@ -223,7 +225,7 @@ class App extends Component {
                 open:false
               })
          }
-         else if (event.target.value == 'new') {
+         else if (event.target.value == 'old') {
               const getValue = ({ id }) => + id || 0;
               let dataz = [...this.state.data]
               let _new = dataz.sort((a, b) => getValue(a) - getValue(b));
@@ -231,7 +233,7 @@ class App extends Component {
                 datafilter: _new,
                 open:false
               })
-         } else if (event.target.value == 'old') {
+         } else if (event.target.value == 'new') {
               const getValue = ({ id }) => + id || 0;
               let dataz = [...this.state.data]
               let _new = dataz.sort((a, b) => getValue(a) - getValue(b));
@@ -240,7 +242,7 @@ class App extends Component {
                 open:false
               })
          } else if (event.target.value == 'high') {
-              const getValue = ({ fee }) => + fee || 0;
+              const getValue = ({ fee }) => + parseInt(fee.split('_')[0]) || 0;
               let dataz = [...this.state.data]
               let _new = dataz.sort((a, b) => getValue(a) - getValue(b));
               this.setState({
@@ -248,7 +250,7 @@ class App extends Component {
                 open:false
               })
          } else {
-              const getValue = ({ fee }) => + fee || 0;
+              const getValue = ({ fee }) => + parseInt(fee.split('_')[0]) || 0;
               let dataz = [...this.state.data]
               let _new = dataz.sort((a, b) => getValue(a) - getValue(b));
               this.setState({
@@ -262,7 +264,7 @@ class App extends Component {
       this.setState({
         type_search: value
       })
-      console.log(value)
+      console.log(value);
     }
    
   render() {
@@ -273,6 +275,7 @@ class App extends Component {
               key={key}
               des={value.description}
               name={value.name}
+              status={value._ApartmentStatus}
               price={(value.fee).split("_")[0]}
               address={value.address_apartment}
               ipfsHash={value.ipfsHash.split("_")[0]}
@@ -315,7 +318,7 @@ class App extends Component {
                <input
                 className="search rm-outline"
                 name="search"
-                placeHolder ="Search"
+                placeholder ="Search"
                 onChange={e => this.handleChanges(e)}
               ></input>
               <img src ={logoS} className ="bt-img-search" onClick ={this.searchTocCheck}/>
@@ -385,10 +388,10 @@ class App extends Component {
                   <div className="row result-filter">
                     <span className="filter-find">
                       {this.state.valueprice != null
-                        ? this.state.valueprice[0] +
+                        ? this.state.valueprice[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                           " VND -" +
-                          this.state.valueprice[1] +
-                          " VDN"
+                          this.state.valueprice[1].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
+                          " VND"
                         : ""}{" "}
                     </span>
                     <span className="filter-find">
@@ -410,7 +413,7 @@ class App extends Component {
                   </div>
                   <div className="row">
                     <div className=" filter-c-c col-md-2">
-                      <p className="info-f"> Price</p>
+                      <p className="info-f" style ={{fontFamily:'monospace'}}> Price</p>
                     </div>
                     <div className=" name-c col-md-10">
                       <Slider

@@ -197,6 +197,7 @@ contract Rental is User, Apartment, Releasegreement {
     {
         Apartments storage _apartment = apartments[_id];
         require(_apartment._landlord == msg.sender);
+        require(_apartment._ApartmentStatus != ApartmentStatus.CLose,"Cant not edit");
         _apartment.name = _name;
         _apartment.description = _description;
         _apartment.fee = _fee;

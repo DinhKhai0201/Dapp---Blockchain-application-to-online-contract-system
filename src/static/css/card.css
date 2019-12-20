@@ -3,6 +3,7 @@
         height: 388px!important;
         display: table;
         float: left!important; */
+        position: relative;
         margin: 30px 10px 20px 10px;
         transition: all .2s ease-in-out;
         cursor: pointer;
@@ -10,6 +11,20 @@
 }
 .card-s:hover {
    transform: scale(1.1); 
+}
+.status-aprt {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    color: white;
+    padding: 2px;
+    border-radius: 3px;
+}
+.status-aprt--open {
+    background-color: green;
+}
+.status-aprt--closed {
+    background-color: red;
 }
 .media-s {
         height: 150px;

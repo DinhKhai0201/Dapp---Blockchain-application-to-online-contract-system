@@ -6,6 +6,7 @@ import { getContract } from '../utils/contractservice'
 import Button from "@material-ui/core/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loading from '../loading';
 class PageAdd extends Component {
   constructor(props) {
     super(props);
@@ -82,7 +83,6 @@ class PageAdd extends Component {
       });
     };
 	getContract(data);
-	let ref_top = this.refs.ref_top;
 	window.scrollTo(0, 0);
   }
   onDrop = picture => {
@@ -155,7 +155,10 @@ class PageAdd extends Component {
     event.stopPropagation();
     event.preventDefault();
     if (event.target.files.length > 7) {
-      alert("Limit in 7 image!");
+      toast.error("Upload limit < 7 images !", {
+        position: toast.POSITION.TOP_LEFT
+      });
+      return false;
     } else {
        tmp = [...tmp, ...event.target.files];
        tmp.forEach(element => {
@@ -178,6 +181,9 @@ class PageAdd extends Component {
       });
   
     });
+    this.setState({
+      loading: true
+    })
     console.log(this.state);
   };
 	onReset = e => {
@@ -197,11 +203,20 @@ class PageAdd extends Component {
 			tmp_file: [],
 		})
 	}
+  deleImage =async (dataImage)=> {
+      console.log(dataImage)
+      let {tmp_file} =this.state
+      let _tmp_file = tmp_file.filter(dataz => dataz != dataImage)
+      this.setState({
+        tmp_file: _tmp_file
+      })
+  }
   render() {
     let imgipfs;
+    let {loading} =this.state;
     console.log(this.state);
     imgipfs = this.state.tmp_file.map(element => {
-      return (<img key={element} src={element} width="100%" alt={element} />)
+      return (<img key={element} src={element} width="100%" alt={element} onClick ={()=>this.deleImage(element)} tilte="Click to delete this image." />)
     });
     return (
       <div className="container imgbg" ref="ref_top">
@@ -499,13 +514,14 @@ class PageAdd extends Component {
           >
             Cancel
           </Button>
-          <Button
+          {loading?( <Button
             variant="outlined"
             className="bt-add-apartment"
             onClick={e => this.onSubmit(e)}
           >
             Add
-          </Button>
+          </Button>):(<span className ="fix-loader"><Loading /></span>)}
+         
         </div>
       </div>
     );

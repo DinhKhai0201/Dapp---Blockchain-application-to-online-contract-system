@@ -31,6 +31,9 @@
     height: 60px;
     margin: auto 14px;
     cursor: pointer;
+    border-radius: 50%;
+    background-color: rgba(192,192,192,0.8);
+
 
 }
 .search {
@@ -49,9 +52,11 @@
 
 }
 .titlename {
-        padding-bottom: 10px;
-        text-align: center;
-        color: white;
+    padding-bottom: 10px;
+    text-align: center;
+    color: white;
+    font-weight: 900;
+    font-family: monospace;
     padding-top: 160px;
 }
 .containerr {
@@ -145,6 +150,7 @@
  }
  .info-f {
     font-size: 20px;
+    font-family: monospace;
  }
  .filter-pr {
     border: 1px solid #d9d4d4;

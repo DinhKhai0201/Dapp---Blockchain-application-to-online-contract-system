@@ -112,12 +112,20 @@ class Login extends Component {
                 login:false
         }) 
     }
-    loginbt =({ history }) => {
+    loginbt = async ({ history }) => {
         let { account,contracts} = this.state
         const obj = {
           address: account
         };
-        
+        let check = await contracts.methods.register(account).call({ from: `${account}` });
+        console.log(check)
+        if (check == false) {
+          console.log("not register");
+          toast.warn("Account Not register !", {
+              position: toast.POSITION.TOP_LEFT
+            });
+          return false;
+        }
         axios.post('http://localhost:4000/persons/login', obj)
           .then(res =>{
             console.log(res.data);
@@ -148,8 +156,8 @@ class Login extends Component {
       
         return (
           <div className="cont_principal cont_principall ">
-            <ToastContainer />
             <div className="cont_centrar">
+             <ToastContainer />
               <div className="cont_login">
                 <div className="cont_tabs_login">
                   <ul className="ul_tabs">
@@ -260,7 +268,7 @@ class Register extends Component {
       [e.target.name]: e.target.value
     });
   };
-  registerbt = ({ history }) => {
+  registerbt = async ({ history }) => {
     let {
       firstname,
       lastname,
@@ -279,6 +287,15 @@ class Register extends Component {
       name: firstname + " " + lastname,
       address: account
     };
+    let check = await this.state.contracts.methods.register(this.state.account).call({ from: `${this.state.account}` });
+    console.log(check)
+    if (check == true) {
+      console.log("exist");
+      toast.warn("Account exist !", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      return false;
+    }
     axios.post("http://localhost:4000/persons/register", obj).then(res => {
      
     });

@@ -23,6 +23,12 @@
     font-size: 20px;
     line-height: 24px;
 }
+.chip-detail-status-close {
+	color: red;
+}
+.chip-detail-status-open {
+	color: green;
+}
 .detail-address {
 }
 .address_a {

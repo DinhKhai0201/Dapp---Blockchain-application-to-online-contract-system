@@ -6,6 +6,8 @@ import { getContract } from '../utils/contractservice'
 import AddIcon from '@material-ui/icons/Add';
 import Button from "@material-ui/core/Button";
 import Loading from '../loading';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 class up extends Component {
     constructor(props) {
         super(props);
@@ -122,15 +124,13 @@ class up extends Component {
         let reader = new window.FileReader()
         reader.readAsArrayBuffer(file)
         reader.onloadend = () => this.convertToBuffer(reader)
-        
-
     };
     convertToBuffer = async (reader) => {
       let check = await this.state.contracts.methods.register(this.state.account).call({ from: `${this.state.account}` });
       console.log(check)
-       let _url;
-        const buffer =  Buffer.from(reader.result);
-        await ipfs.add(buffer, (err, ipfsHash) => {
+      let _url;
+      const buffer =  Buffer.from(reader.result);
+      await ipfs.add(buffer, (err, ipfsHash) => {
             console.log(ipfsHash)
             if (ipfsHash && ipfsHash[0]) {
                 _url = 'https://gateway.ipfs.io/ipfs/' + ipfsHash[0].hash ;
@@ -159,6 +159,10 @@ class up extends Component {
     } = this.state;
     if (url == ''){
         console.log("url null")
+         toast.warn("No file !", {
+            position: toast.POSITION.TOP_LEFT
+        });
+        return false
     }
     contracts.methods
       .Uploadfile(title, url, time)
@@ -169,7 +173,9 @@ class up extends Component {
         }
       )
       .once("receipt", receipt => {
-        alert("You just create");
+        toast.success("Success login !", {
+            position: toast.POSITION.TOP_LEFT
+        });
       }); 
   }
 
@@ -191,6 +197,7 @@ class up extends Component {
       }
         return (
           <div className="container imgbg" ref="ref_top">
+          <ToastContainer />
             <div className="clearfix">
               <br />
               <br />
